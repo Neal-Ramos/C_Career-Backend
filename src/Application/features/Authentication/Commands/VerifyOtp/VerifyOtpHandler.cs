@@ -39,6 +39,18 @@ namespace Application.features.Authentication.Commands.VerifyOtp
                 Code: req.Code
             )?? throw new InvalidCodeExeption();
 
+            if(getCode.IsUsed == true)
+            {
+                throw new InvalidCodeExeption();
+            }
+            if(getCode.DateExpiry < DateTime.UtcNow)
+            {
+                throw new ExpiredCodeExeption();
+            }
+
+            getCode.IsUsed = true;
+            await _authCode.SaveChangesAsync();
+
             var AccessToken = _tokenService.GenerateJwtToken(
                 AdminId: getCode.OwnerId,
                 Email: getCode.Owner.Email,

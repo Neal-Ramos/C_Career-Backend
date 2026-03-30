@@ -31,11 +31,11 @@ namespace API.controllers
                 UserName = req.UserName,
                 Password = req.Password
             };
-            var result = await _mediator.Send(query);
+            var result = await _mediator.Send(query, cancellationToken);
 
             return Ok(new APIResponse<object>
             {
-                Message = "Success",
+                Message = "Otp Code Sent!",
                 Status = 200,
                 Data = result
             });
@@ -43,7 +43,8 @@ namespace API.controllers
 
         [HttpPost("VerifyOtp")]
         public async Task<IActionResult> VerifyOtp(
-            [FromBody] VerifyOtpCommand req
+            [FromBody] VerifyOtpCommand req,
+            CancellationToken cancellationToken
         )
         {
             var query = new VerifyOtpCommand
@@ -52,7 +53,7 @@ namespace API.controllers
                 Email = req.Email
             };
 
-            var result = await _mediator.Send(query);
+            var result = await _mediator.Send(query, cancellationToken);
 
             Response.Cookies.Append("Refresh_Token", result.RefreshToken, new CookieOptions
             {
@@ -66,7 +67,11 @@ namespace API.controllers
             {
                 Message = "Success",
                 Status = 200,
-                Data = result
+                Data = new
+                {
+                    accessToken = result.AccessToken,
+                    accessTokenEpiry = result.AccessTokenEpiry
+                }
             });
         }
     }

@@ -1,3 +1,4 @@
+using API.middleware;
 using Application;
 using Infrastructure;
 using Infrastructure.Persistence;
@@ -18,6 +19,9 @@ builder.Services.AddCors(options =>
 
 var isDevelopment = builder.Environment.IsDevelopment();
 
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddProblemDetails();
+
 builder.Services.AddControllers();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration, isDevelopment);
@@ -32,6 +36,8 @@ using (var scope = app.Services.CreateScope())
     var seeder = scope.ServiceProvider.GetRequiredService<IDbSeeder>();
     await seeder.SeedAsync();
 }
+
+app.UseExceptionHandler();
 
 app.UseSwagger();
 app.UseSwaggerUI();

@@ -18,5 +18,7 @@ namespace Application.commons.IRepository
             string Code,
             string Email
         );
+
+        Task SaveChangesAsync();
     }
 }

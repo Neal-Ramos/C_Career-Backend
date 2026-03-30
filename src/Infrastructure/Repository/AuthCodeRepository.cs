@@ -70,5 +70,10 @@ namespace Infrastructure.Repository
                 }
             }).FirstOrDefaultAsync(a => a.Code == Code && a.Owner.Email == Email);
         }
+
+        public async Task SaveChangesAsync()
+        {
+            await _context.SaveChangesAsync();
+        }
     }
 }
