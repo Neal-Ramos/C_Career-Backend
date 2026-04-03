@@ -1,12 +1,10 @@
-using Application.commons.DTOs;
-using Application.features.JobApplications.DTOs;
-using Application.features.JobApplications.Queries.GetApplications;
+using Domain.Entities;
 
 namespace Application.commons.IRepository
 {
     public interface IApplicationsRepository
     {
-        Task<JobApplicationDto> AddApplication(
+        Task<Applications> AddApplication(
             string FirstName,
             string MiddleName,
             string LastName,
@@ -18,12 +16,11 @@ namespace Application.commons.IRepository
             string SubmittedFile,
             Guid JobId
         );
-        Task<GetJobApplicationsDto> GetApplications(
+        Task<ICollection<Applications>> GetApplications(
             int Page,
-            int PageSize,
-            string? FilterEmail,
-            string? FilterJob,
-            string? FilterStatus
+            int PageSize
+        );
+        Task<int> GetApplicationsTotal(
         );
     }
 }

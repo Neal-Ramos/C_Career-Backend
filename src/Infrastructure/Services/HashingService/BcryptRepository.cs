@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Application.commons.IServices;
 
 namespace Infrastructure.Services.HashingService
@@ -15,7 +11,7 @@ namespace Infrastructure.Services.HashingService
             return Task.FromResult(BCrypt.Net.BCrypt.HashPassword(str));
         }
 
-        public Task<Boolean> VerifyString(
+        public Task<bool> VerifyString(
             string str,
             string reference
         )

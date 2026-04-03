@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Persistence.configurations
 {
-    public class ApplicationsConfigurations: IEntityTypeConfiguration<JobApplications>
+    public class ApplicationsConfigurations: IEntityTypeConfiguration<Applications>
     {
-        public void Configure(EntityTypeBuilder<JobApplications> builder)
+        public void Configure(EntityTypeBuilder<Applications> builder)
         {
-            builder.ToTable("JobApplications");
+            builder.ToTable("Applications");
 
             builder.HasKey(a => a.Id);
             builder.HasIndex(a => a.ApplicationId)

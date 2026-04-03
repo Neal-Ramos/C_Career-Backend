@@ -1,24 +1,18 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Application.commons.DTOs;
+using Domain.Entities;
 
 namespace Application.commons.IRepository
 {
     public interface IAuthCodeRepository
     {
-        Task<AuthCodeDto> CreateCodeFor(
+        Task<AuthCodes> CreateCodeFor(
             string Code,
             DateTime DateCreated,
             DateTime DateExpiry,
             Guid OwnerId
         );
-        Task<AuthCodeDto?> GetCodeByCodeAndEmail(
+        Task<AuthCodes?> GetCodeByCodeAndEmail(
             string Code,
             string Email
         );
-
-        Task SaveChangesAsync();
     }
 }

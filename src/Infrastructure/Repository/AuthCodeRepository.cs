@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Application.commons.DTOs;
 using Application.commons.IRepository;
 using Domain.Entities;
 using Infrastructure.Persistence;
@@ -18,7 +13,7 @@ namespace Infrastructure.Repository
             _context = appDbContext;
         }
 
-        public async Task<AuthCodeDto> CreateCodeFor(
+        public async Task<AuthCodes> CreateCodeFor(
             string Code,
             DateTime DateCreated,
             DateTime DateExpiry,
@@ -33,47 +28,15 @@ namespace Infrastructure.Repository
                 OwnerId = OwnerId
             };
             await _context.AuthCodes.AddAsync(newCode);
-            _context.SaveChanges();
-
-            return new AuthCodeDto
-            {
-                AuthCodeId = newCode.AuthCodeId,
-                Code = newCode.Code,
-                DateCreated = newCode.DateCreated,
-                DateExpiry = newCode.DateExpiry,
-                DateUsed = newCode.DateUsed,
-                IsUsed = newCode.IsUsed,
-                OwnerId = newCode.OwnerId,
-            };
+            
+            return newCode;
         }
-        public async Task<AuthCodeDto?> GetCodeByCodeAndEmail(
+        public async Task<AuthCodes?> GetCodeByCodeAndEmail(
             string Code,
             string Email
         )
         {
-            return await _context.AuthCodes.Select(a => new AuthCodeDto
-            {
-                AuthCodeId = a.AuthCodeId,
-                Code = a.Code,
-                DateCreated = a.DateCreated,
-                DateExpiry = a.DateExpiry,
-                DateUsed = a.DateUsed,
-                IsUsed = a.IsUsed,
-                OwnerId = a.OwnerId,
-                Owner = new AdminAccountsDto
-                {
-                    Email = a.Owner.Email,
-                    UserName = a.Owner.UserName,
-                    FirstName = a.Owner.FirstName,
-                    LastName = a.Owner.LastName,
-                    MiddleName = a.Owner.MiddleName
-                }
-            }).FirstOrDefaultAsync(a => a.Code == Code && a.Owner.Email == Email);
-        }
-
-        public async Task SaveChangesAsync()
-        {
-            await _context.SaveChangesAsync();
+            return await _context.AuthCodes.FirstOrDefaultAsync(a => a.Code == Code && a.Owner.Email == Email);
         }
     }
 }

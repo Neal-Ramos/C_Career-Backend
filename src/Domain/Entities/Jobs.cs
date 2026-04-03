@@ -5,7 +5,7 @@ namespace Domain.Entities
 {
     public class Jobs
     {
-        public int Id {get; set;}
+        public int Id {get; private set;}
         public Guid JobId {set; get;} = Guid.NewGuid();
         public string Title {set; get;} = null!;
         public string? Description {set; get;}
@@ -17,6 +17,6 @@ namespace Domain.Entities
         //
         public Guid CreatorId {get; set;}
         public AdminAccounts CreatedBy {get; set;} = null!;
-        public ICollection<JobApplications>? JobApplications {get; set;}
+        public ICollection<Applications>? JobApplications {get; set;}
     }
 }

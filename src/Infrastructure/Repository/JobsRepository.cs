@@ -1,6 +1,5 @@
 using Application.commons.IRepository;
-using Application.features.Jobs.DTOs;
-using Application.features.Jobs.Queries.GetAllJobs;
+using Domain.Entities;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,69 +7,43 @@ namespace Infrastructure.Repository
 {
     public class JobsRepository: IJobsRepository
     {
-        private readonly AppDbContext context;
+        private readonly AppDbContext _context;
         public JobsRepository (AppDbContext appDbContext)
         {
-            context = appDbContext;
+            _context = appDbContext;
         }
 
-        public async Task<GetAllJobsDto> GetAllJobs(
+        public async Task<ICollection<Jobs>> GetAllJobs(
             int Page,
             int PageSize,
             string? Search
         )
         {
-            var query = context.Jobs.AsQueryable();
-            if (!string.IsNullOrEmpty(Search))query = query.Where(j => j.Title.Contains(Search) || j.Roles.Contains(Search));
+            var query = _context.Jobs.AsQueryable();
+            if(Search != null) query = query.Where(a => a.Title.StartsWith(Search));
 
-            var count = await query.CountAsync();
-            var jobs = await query
+            return await query
             .OrderBy(j => j.Id)
             .Skip((Page - 1) * PageSize)
             .Take(PageSize)
-            .Select(j => new JobsDto
-            {
-                JobId = j.JobId,
-                Title = j.Title,
-                Description = j.Description,
-                Roles = j.Roles,
-                FileRequirements = j.FileRequirements,
-                DateCreated = j.DateCreated,
-
-            }).ToListAsync();
-
-            return new GetAllJobsDto
-            {
-                Jobs= jobs,
-                TotalPages = (int)Math.Ceiling((double)count / PageSize),
-                TotalRecords = count
-            };
+            .ToListAsync();
         }
 
-        public async Task<JobsDto?> GetJobsById(
+        public async Task<int> GetJobsTotal(
+            string? Search
+        )
+        {
+            var query = _context.Jobs.AsQueryable();
+            if(Search != null) query = query.Where(a => a.Title.Contains(Search));
+
+            return await _context.Jobs.CountAsync();
+        }
+
+        public async Task<Jobs?> GetJobsById(
             Guid JobId
         )
         {
-            var result = await context.Jobs
-                .FirstOrDefaultAsync(j => j.JobId == JobId);
-            
-            if(result == null)
-            {
-                return null;
-            }
-            else
-            {
-                return new JobsDto
-                {
-                    Id = result.Id,
-                    JobId = result.JobId,
-                    Title = result.Title,
-                    Description = result.Description,
-                    Roles = result.Roles,
-                    FileRequirements = result.FileRequirements,
-                    DateCreated = result.DateCreated
-                };
-            }
+            return await _context.Jobs.FirstOrDefaultAsync(j => j.JobId == JobId);
         }
     }
 }

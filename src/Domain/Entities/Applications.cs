@@ -2,7 +2,7 @@ using Domain.enums;
 
 namespace Domain.Entities
 {
-    public class JobApplications
+    public class Applications
     {
         public int Id {get; private set;}
         public Guid ApplicationId {get; private set;}

@@ -17,7 +17,7 @@ namespace API.controllers
             _mediatR = mediatR;
         }
 
-        [HttpGet("GetJobs")]
+        [HttpGet("")]
         public async Task<IActionResult> GetAllJobs(
             CancellationToken cancellationToken,
             [FromQuery] string? Search,
@@ -34,15 +34,18 @@ namespace API.controllers
 
             return Ok(new APIResponse<object>
             {
-                Message = "Success",
-                Status = 200,
-                Data = result
+                Data = result.Jobs,
+                Meta = new Dictionary<string, object>
+                {
+                    ["TotalRecord"] = result.TotalRecord,
+                    ["TotalPages"] = result.TotalPages
+                }
             });
         }
 
-        [HttpGet("GetJobById")]
+        [HttpGet("{JobId}")]
         public async Task<IActionResult> GetJobsById(
-            [FromQuery] Guid JobId,
+            Guid JobId,
             CancellationToken cancellationToken
         )
         {
@@ -54,8 +57,6 @@ namespace API.controllers
 
             return Ok(new APIResponse<object>
             {
-                Message = "Success",
-                Status = 200,
                 Data = result
             });
         }

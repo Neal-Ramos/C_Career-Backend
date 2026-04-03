@@ -4,14 +4,12 @@ using Infrastructure.Persistence;
 using Infrastructure.Repository;
 using Infrastructure.Services;
 using Infrastructure.Services.CloudinaryServices;
-using Infrastructure.Services.CodeGenerator;
 using Infrastructure.Services.HashingService;
 using Infrastructure.Services.ResendServices;
 using Infrastructure.Services.TokenServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
 using Resend;
 
 namespace Infrastructure
@@ -27,7 +25,7 @@ namespace Infrastructure
             services.AddDbContext<AppDbContext>((sp, options) =>
             {
                options.UseSqlServer(
-                configuration.GetConnectionString("DefaultConnection")
+                configuration.GetConnectionString("CCareerDB")
                );
 
                options.EnableDetailedErrors();
@@ -37,6 +35,8 @@ namespace Infrastructure
                     options.EnableSensitiveDataLogging();
                 }
             });
+            services.AddScoped<IDbContext>(provider => 
+                provider.GetRequiredService<AppDbContext>());
 
             //Register Repositories
             services.AddScoped<IJobsRepository, JobsRepository>();
@@ -45,7 +45,6 @@ namespace Infrastructure
             services.AddScoped<IAuthCodeRepository, AuthCodeRepository>();
             services.AddScoped<IRefreshTokensRepository, RefreshTokenRepository>();
 
-            services.AddScoped<IGenerateCodeService, CodeGeneratorRepository>();
             services.AddScoped<IHashingService, BcryptRepository>();
 
             //Register Seeder

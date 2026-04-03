@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
 using Application.commons.DTOs;
 using Application.commons.IServices;
 using Microsoft.Extensions.Configuration;
@@ -13,9 +8,14 @@ namespace Infrastructure.Services.ResendServices
     public class ResendRepository: ISendEmailService
     {
         private readonly IResend _resend;
-        public ResendRepository(IResend resend)
+        private readonly IConfiguration _configuration;
+        public ResendRepository(
+            IResend resend,
+             IConfiguration configuration
+        )
         {
             _resend = resend;
+            _configuration = configuration;
         }
 
         public async Task<SentEmailDto> SendEmailAsync(
@@ -26,7 +26,7 @@ namespace Infrastructure.Services.ResendServices
         {
             var message = new EmailMessage();
 
-            message.From = "service@resend.dev";
+            message.From = _configuration.GetSection("Resend:FromEmail").Value!;
             message.To.Add(To);
             message.Subject = Subject;
             message.HtmlBody = HtmlContent;

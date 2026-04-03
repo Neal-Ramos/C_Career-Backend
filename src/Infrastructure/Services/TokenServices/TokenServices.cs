@@ -1,13 +1,8 @@
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
 using Application.commons.IServices;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Infrastructure.Services.TokenServices
@@ -22,7 +17,6 @@ namespace Infrastructure.Services.TokenServices
 
         public string GenerateJwtToken(
             Guid AdminId,
-            string Email,
             string Role
         )
         {
@@ -32,8 +26,7 @@ namespace Infrastructure.Services.TokenServices
             var claims = new[]
             {
                 new Claim(JwtRegisteredClaimNames.Sub, AdminId.ToString()),
-                new Claim(ClaimTypes.Role, Role),
-                new Claim("Email", Email)
+                new Claim(ClaimTypes.Role, Role)
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));

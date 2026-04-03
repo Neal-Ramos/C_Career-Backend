@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Application.features.JobApplications.DTOs;
+using Application.features.Applications.DTOs;
 
 namespace API.helper
 {

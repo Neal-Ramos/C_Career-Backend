@@ -1,27 +1,29 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Application.commons.DTOs;
 using Application.commons.IRepository;
-using Application.features.Jobs.DTOs;
+using AutoMapper;
 using MediatR;
 
 namespace Application.features.Jobs.Queries.GetJobsById
 {
-    public class GetJobByIdHandler: IRequestHandler<GetJobsByIdQuery, JobsDto?>
+    public class GetJobByIdHandler: IRequestHandler<GetJobsByIdQuery, JobDto?>
     {
         private readonly IJobsRepository _jobsRepository;
+        private readonly IMapper _mapper;
 
-        public GetJobByIdHandler(IJobsRepository jobsRepository)
+        public GetJobByIdHandler(
+            IJobsRepository jobsRepository,
+            IMapper mapper
+        )
         {
             _jobsRepository = jobsRepository;
+            _mapper = mapper;
         }
     
-        public async Task<JobsDto?> Handle(GetJobsByIdQuery req, CancellationToken cancellationToken)
+        public async Task<JobDto?> Handle(GetJobsByIdQuery req, CancellationToken cancellationToken)
         {
-            var result = await _jobsRepository.GetJobsById(req.JobId);
+            var job = await _jobsRepository.GetJobsById(req.JobId);
 
-            return result;
+            return _mapper.Map<JobDto>(job);
         }
     }
 }

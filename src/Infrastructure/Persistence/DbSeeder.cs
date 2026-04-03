@@ -25,7 +25,7 @@ namespace Infrastructure.Persistence
                 context.AdminAccounts.AddRange(
                     new AdminAccounts
                     {
-                        Email = "nealramos72",
+                        Email = "nealramos72@gmail.com",
                         UserName = "Neal",
                         Password = BCrypt.Net.BCrypt.HashPassword("admin"),
                         FirstName = "Neal",

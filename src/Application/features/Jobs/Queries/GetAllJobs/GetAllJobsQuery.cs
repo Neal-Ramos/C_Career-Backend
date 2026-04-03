@@ -1,6 +1,3 @@
-
-
-using Application.features.Jobs.DTOs;
 using MediatR;
 
 namespace Application.features.Jobs.Queries.GetAllJobs

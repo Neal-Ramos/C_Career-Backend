@@ -53,8 +53,6 @@ artifacts/
 # ========================
 # ASP.NET / Runtime
 # ========================
-launchSettings.json
-**/Properties/launchSettings.json
 appsettings.Development.json
 appsettings.Local.json
 appsettings.Secrets.json

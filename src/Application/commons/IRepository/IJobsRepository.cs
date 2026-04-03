@@ -1,16 +1,18 @@
-using Application.features.Jobs.DTOs;
-using Application.features.Jobs.Queries.GetAllJobs;
+using Domain.Entities;
 
 namespace Application.commons.IRepository
 {
     public interface IJobsRepository
     {
-        Task<GetAllJobsDto> GetAllJobs(
+        Task<ICollection<Jobs>> GetAllJobs(
             int Page,
             int PageSize,
             string? Search
         );
-        Task<JobsDto?> GetJobsById(
+        Task<int> GetJobsTotal(
+            string? Search
+        );
+        Task<Jobs?> GetJobsById(
             Guid JobId
         );
     }
