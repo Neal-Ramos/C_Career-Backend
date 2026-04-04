@@ -6,7 +6,8 @@ namespace Application.commons.IRepository
     {
         Task<RefreshTokens> AddRefreshToken(
             string Token,
-            DateTime ExpiryDate
+            DateTime ExpiryDate,
+            DateTime DateCreated
         );
     }
 }

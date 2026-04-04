@@ -36,12 +36,12 @@ namespace Infrastructure.Persistence.configurations
                 .IsRequired();
 
             builder.Property(j => j.DateCreated)
-                .HasDefaultValueSql("GETUTCDATE()");
+                .IsRequired();
 
             builder.Property(j => j.EditedBy);
             
             //relation
-            builder.HasOne(j => j.CreatedBy)
+            builder.HasOne(j => j.AdminAccounts)
                 .WithMany(a => a.CreatedJobs)
                 .HasForeignKey(a => a.CreatorId)
                 .HasPrincipalKey(j => j.AdminId);

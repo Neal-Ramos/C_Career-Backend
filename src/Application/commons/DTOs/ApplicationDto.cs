@@ -13,7 +13,7 @@ namespace Application.commons.DTOs
         public int GraduationYear {get; set;}
         public string FileSubmitted {get; set;} = null!;
         public string Status {get; set;} = null!;
-        public DateTime DateSubmitted {get; set;} = DateTime.UtcNow;
+        public DateTime DateSubmitted {get; set;}
         public DateTime? DateReviewed {get; set;} = null;
     }
 }

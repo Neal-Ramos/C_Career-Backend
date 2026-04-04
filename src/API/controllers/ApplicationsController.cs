@@ -20,15 +20,15 @@ namespace API.controllers
 
         [HttpPost]
         public async Task<IActionResult> AddApplication(
-            [FromForm] string FirstName,
-            [FromForm] string MiddleName,
-            [FromForm] string LastName,
-            [FromForm] string Email,
-            [FromForm] string ContactNumber,
-            [FromForm] string UniversityName,
-            [FromForm] string Degree,
-            [FromForm] string GraduationYear,
-            [FromForm] Guid JobId,
+            [FromForm] string firstName,
+            [FromForm] string middleName,
+            [FromForm] string lastName,
+            [FromForm] string email,
+            [FromForm] string contactNumber,
+            [FromForm] string universityName,
+            [FromForm] string degree,
+            [FromForm] string graduationYear,
+            [FromForm] Guid jobId,
             CancellationToken cancellationToken
         )
         {
@@ -40,16 +40,16 @@ namespace API.controllers
             }).ToList();
             var query = new AddApplicationCommand
             {
-                FirstName = FirstName,
-                MiddleName = MiddleName,
-                LastName = LastName,
-                Email = Email,
-                ContactNumber = ContactNumber,
-                UniversityName = UniversityName,
-                Degree = Degree,
-                GraduationYear = int.Parse(GraduationYear),
+                FirstName = firstName,
+                MiddleName = middleName,
+                LastName = lastName,
+                Email = email,
+                ContactNumber = contactNumber,
+                UniversityName = universityName,
+                Degree = degree,
+                GraduationYear = int.Parse(graduationYear),
                 SubmittedFile = SubmittedFile,
-                JobId = JobId
+                JobId = jobId
             };
 
             var result = await _mediator.Send(query, cancellationToken);

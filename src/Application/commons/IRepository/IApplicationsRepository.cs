@@ -14,6 +14,7 @@ namespace Application.commons.IRepository
             string Degree,
             int GraduationYear,
             string SubmittedFile,
+            DateTime DateSubmitted,
             Guid JobId
         );
         Task<ICollection<Applications>> GetApplications(

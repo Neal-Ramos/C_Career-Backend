@@ -1,4 +1,5 @@
 using API.common.Responses;
+using Application.commons.Helpers;
 using Application.features.Authentication.Commands.Login;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -38,7 +39,7 @@ namespace API.controllers
                     HttpOnly = true,
                     Secure   = Request.IsHttps,
                     SameSite = SameSiteMode.Lax,
-                    Expires  = DateTime.UtcNow.AddDays(1)
+                    Expires  = DateHelper.GetPHTime().AddDays(1)
                 });
             }
 

@@ -55,7 +55,7 @@ namespace Infrastructure.Persistence.configurations
             builder.Property(a => a.FileSubmitted);
 
             builder.Property(a => a.DateSubmitted)
-                .HasDefaultValueSql("GETUTCDATE()");
+                .IsRequired();
 
             builder.Property(a => a.Status)
                 .HasConversion<string>()

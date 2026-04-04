@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Application.commons.Helpers;
 using Domain.Entities;
 
 namespace Infrastructure.Persistence
@@ -53,7 +54,8 @@ namespace Infrastructure.Persistence
                             new { FileName = "Resume", Required = true },
                             new { FileName = "Portfolio", Required = false }
                         }),
-                        CreatedBy = admin
+                        AdminAccounts = admin,
+                        DateCreated = DateHelper.GetPHTime()
                     },
                     new Jobs
                     {
@@ -69,7 +71,8 @@ namespace Infrastructure.Persistence
                         {
                             new { FileName = "Resume", Required = true }
                         }),
-                        CreatedBy = admin
+                        AdminAccounts = admin,
+                        DateCreated = DateHelper.GetPHTime()
                     },
                     new Jobs
                     {
@@ -86,7 +89,8 @@ namespace Infrastructure.Persistence
                             new { FileName = "Resume", Required = true },
                             new { FileName = "Portfolio", Required = true }
                         }),
-                        CreatedBy = admin
+                        AdminAccounts = admin,
+                        DateCreated = DateHelper.GetPHTime()
                     },
                     new Jobs
                     {
@@ -103,7 +107,8 @@ namespace Infrastructure.Persistence
                             new { FileName = "Resume", Required = true },
                             new { FileName = "Certifications", Required = false }
                         }),
-                        CreatedBy = admin
+                        AdminAccounts = admin,
+                        DateCreated = DateHelper.GetPHTime()
                     },
                     new Jobs
                     {
@@ -118,7 +123,8 @@ namespace Infrastructure.Persistence
                         {
                             new { FileName = "Portfolio", Required = true }
                         }),
-                        CreatedBy = admin
+                        AdminAccounts = admin,
+                        DateCreated = DateHelper.GetPHTime()
                     },
                     new Jobs
                     {
@@ -134,7 +140,8 @@ namespace Infrastructure.Persistence
                             new { FileName = "Resume", Required = true },
                             new { FileName = "Portfolio", Required = true }
                         }),
-                        CreatedBy = admin
+                        AdminAccounts = admin,
+                        DateCreated = DateHelper.GetPHTime()
                     },
                     new Jobs
                     {
@@ -150,7 +157,8 @@ namespace Infrastructure.Persistence
                         {
                             new { FileName = "Resume", Required = true }
                         }),
-                        CreatedBy = admin
+                        AdminAccounts = admin,
+                        DateCreated = DateHelper.GetPHTime()
                     },
                     new Jobs
                     {
@@ -167,7 +175,8 @@ namespace Infrastructure.Persistence
                             new { FileName = "Resume", Required = true },
                             new { FileName = "Portfolio", Required = false }
                         }),
-                        CreatedBy = admin
+                        AdminAccounts = admin,
+                        DateCreated = DateHelper.GetPHTime()
                     },
                     new Jobs
                     {
@@ -182,7 +191,8 @@ namespace Infrastructure.Persistence
                         {
                             new { FileName = "Resume", Required = true }
                         }),
-                        CreatedBy = admin
+                        AdminAccounts = admin,
+                        DateCreated = DateHelper.GetPHTime()
                     },
                     new Jobs
                     {
@@ -197,7 +207,8 @@ namespace Infrastructure.Persistence
                         {
                             new { FileName = "Resume", Required = true }
                         }),
-                        CreatedBy = admin
+                        AdminAccounts = admin,
+                        DateCreated = DateHelper.GetPHTime()
                     },
                     new Jobs
                     {
@@ -214,7 +225,8 @@ namespace Infrastructure.Persistence
                             new { FileName = "Resume", Required = true },
                             new { FileName = "Certifications", Required = false }
                         }),
-                        CreatedBy = admin
+                        AdminAccounts = admin,
+                        DateCreated = DateHelper.GetPHTime()
                     },
                     new Jobs
                     {
@@ -229,7 +241,8 @@ namespace Infrastructure.Persistence
                         {
                             new { FileName = "Resume", Required = true }
                         }),
-                        CreatedBy = admin
+                        AdminAccounts = admin,
+                        DateCreated = DateHelper.GetPHTime()
                     },
                     new Jobs
                     {
@@ -244,7 +257,8 @@ namespace Infrastructure.Persistence
                         {
                             new { FileName = "Resume", Required = true }
                         }),
-                        CreatedBy = admin
+                        AdminAccounts = admin,
+                        DateCreated = DateHelper.GetPHTime()
                     },
                     new Jobs
                     {
@@ -259,7 +273,8 @@ namespace Infrastructure.Persistence
                         {
                             new { FileName = "Portfolio", Required = true }
                         }),
-                        CreatedBy = admin
+                        AdminAccounts = admin,
+                        DateCreated = DateHelper.GetPHTime()
                     },
                     new Jobs
                     {
@@ -274,7 +289,8 @@ namespace Infrastructure.Persistence
                         {
                             new { FileName = "Resume", Required = true }
                         }),
-                        CreatedBy = admin
+                        AdminAccounts = admin,
+                        DateCreated = DateHelper.GetPHTime()
                     }
                 );
 

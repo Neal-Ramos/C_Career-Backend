@@ -16,8 +16,8 @@ namespace Domain.Entities
         public int GraduationYear {get; set;}
         public string FileSubmitted {get; set;} = null!;
         public ApplicationStatusEnum Status {get; set;} = ApplicationStatusEnum.Pending;
-        public DateTime DateSubmitted {get; set;} = DateTime.UtcNow;
-        public DateTime? DateReviewed {get; set;} = null;
+        public DateTime DateSubmitted {get; set;}
+        public DateTime? DateReviewed {get; set;}
 
         //relation
         public Guid JobId {get; set;}

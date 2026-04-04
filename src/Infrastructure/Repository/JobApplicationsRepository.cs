@@ -23,6 +23,7 @@ namespace Infrastructure.Repository
             string Degree,
             int GraduationYear,
             string FileSubmitted,
+            DateTime DateSubmitted,
             Guid JobId
         )
         {
@@ -37,6 +38,7 @@ namespace Infrastructure.Repository
                 Degree = Degree,
                 GraduationYear = GraduationYear,
                 FileSubmitted = FileSubmitted,
+                DateSubmitted = DateSubmitted,
                 JobId = JobId
             };
             await _context.Applications.AddAsync(newApplication);

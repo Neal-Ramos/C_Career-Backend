@@ -16,12 +16,14 @@ namespace Infrastructure.Repository
 
         public async Task<RefreshTokens> AddRefreshToken(
             string Token,
-            DateTime ExpiryDate
+            DateTime ExpiryDate,
+            DateTime DateCreated
         ){
             var newToken = new RefreshTokens
             {
                 Token = Token,
-                ExpiryDate = ExpiryDate
+                ExpiryDate = ExpiryDate,
+                DateCreated = DateCreated
             };
             await _context.AddAsync(newToken);
 

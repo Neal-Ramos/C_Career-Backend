@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class InitMigrate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -37,8 +37,8 @@ namespace Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    RefreshTokenId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    HashedToken = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Token = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    IsRevoked = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     ExpiryDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -83,7 +83,7 @@ namespace Infrastructure.Migrations
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Roles = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
                     FileRequirements = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
+                    DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EditedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
@@ -116,7 +116,7 @@ namespace Infrastructure.Migrations
                     GraduationYear = table.Column<int>(type: "int", nullable: false),
                     FileSubmitted = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false, defaultValue: "Pending"),
-                    DateSubmitted = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()"),
+                    DateSubmitted = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DateReviewed = table.Column<DateTime>(type: "datetime2", nullable: true),
                     JobId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
@@ -163,6 +163,11 @@ namespace Infrastructure.Migrations
                 table: "Jobs",
                 column: "JobId",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RefreshTokens_Token",
+                table: "RefreshTokens",
+                column: "Token");
         }
 
         /// <inheritdoc />

@@ -52,10 +52,10 @@ namespace Application.features.Authentication.Commands.Login
             if(req.OtpCode == null)// Send Otp Code
             {
                 var OtpCode = new OtpGenerator().GenerateOtpCode();
-                var OtpExpiry = DateTime.UtcNow.AddMinutes(2);
+                var OtpExpiry = DateHelper.GetPHTime().AddMinutes(2);
                 await _authCodeRepository.CreateCodeFor(
                     Code: OtpCode,
-                    DateCreated: DateTime.UtcNow,
+                    DateCreated: DateHelper.GetPHTime(),
                     DateExpiry: OtpExpiry,
                     OwnerId: adminAccount.AdminId
                 );
@@ -76,7 +76,7 @@ namespace Application.features.Authentication.Commands.Login
                     Email: adminAccount.Email,
                     Code: req.OtpCode
                 )?? throw new InvalidInputExeption();
-                if(OtpCode.DateExpiry <= DateTime.UtcNow) throw new InvalidInputExeption("Code Expired");
+                if(OtpCode.DateExpiry <= DateHelper.GetPHTime()) throw new InvalidInputExeption("Code Expired");
 
                 var AccessToken = _tokenService.GenerateJwtToken(
                     AdminId: adminAccount.AdminId,
@@ -86,7 +86,8 @@ namespace Application.features.Authentication.Commands.Login
 
                 await _refreshTokensRepository.AddRefreshToken(
                     Token: RefreshToken,
-                    ExpiryDate: DateTime.UtcNow.AddDays(1)
+                    ExpiryDate: DateHelper.GetPHTime().AddDays(1),
+                    DateCreated: DateHelper.GetPHTime()
                 );
                 OtpCode.IsUsed = true;
 
@@ -96,7 +97,7 @@ namespace Application.features.Authentication.Commands.Login
                     AdminAccount = _mapper.Map<AdminAccountDto>(adminAccount),
                     RefreshToken = RefreshToken,
                     AccessToken = AccessToken,
-                    AccessTokenExpirations = DateTime.UtcNow.AddMinutes(3),
+                    AccessTokenExpirations = DateHelper.GetPHTime().AddMinutes(3),
                     Message = "Login Successful"
                 };
             }

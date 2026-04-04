@@ -1,3 +1,4 @@
+using Application.commons.Helpers;
 using Application.exeptions;
 using Microsoft.AspNetCore.Diagnostics;
 
@@ -32,7 +33,7 @@ namespace API.middleware
                 statusCode,
                 errorCode,
                 message,
-                timestamp = DateTime.UtcNow
+                timestamp = DateHelper.GetPHTime()
             }, cancellationToken);
 
             return true;

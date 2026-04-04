@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Application.commons.DTOs;
+using Application.commons.Helpers;
 using Application.commons.IRepository;
 using Application.commons.IServices;
 using AutoMapper;
@@ -53,6 +54,7 @@ namespace Application.features.Applications.Commands.AddApplication
                 Degree: req.Degree,
                 GraduationYear: req.GraduationYear,
                 SubmittedFile: JsonSerializer.Serialize(SubmittedFile),
+                DateSubmitted: DateHelper.GetPHTime(),
                 JobId: req.JobId
             );
             await _sendEmail.SendEmailAsync(
