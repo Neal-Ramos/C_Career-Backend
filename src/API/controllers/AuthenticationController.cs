@@ -1,7 +1,11 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using API.common.Responses;
 using Application.commons.Helpers;
 using Application.features.Authentication.Commands.Login;
+using Application.features.Authentication.Commands.RotateToken;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.controllers
@@ -19,6 +23,7 @@ namespace API.controllers
         }
 
         [HttpPost("login")]
+        [AllowAnonymous]
         public async Task<IActionResult> Login(
             [FromBody] LoginCommand req,
             CancellationToken cancellationToken
@@ -39,18 +44,56 @@ namespace API.controllers
                     HttpOnly = true,
                     Secure   = Request.IsHttps,
                     SameSite = SameSiteMode.Lax,
-                    Expires  = DateHelper.GetPHTime().AddDays(1)
+                    Expires  = DateTime.UtcNow.AddDays(1)
                 });
             }
-
-            return Ok(new APIResponse<object>
+            var response = new APIResponse<object>
             {
                 Message = result.Message,
                 Data = result.AdminAccount,
-                Meta = new Dictionary<string, object>
+            };
+            if(result.AccessToken != null) response.Meta = new Dictionary<string, object>
+            {
+                ["AccessToken"] = result.AccessToken
+            };
+
+            return Ok(response);
+        }
+
+        [HttpPost("rotateToken")]
+        [Authorize]
+        public async Task<IActionResult> RotateToken(
+            CancellationToken cancellationToken
+        )
+        {
+            var UsedAccessToken = Request.Headers.Authorization.ToString().Replace("Bearer ", "");
+            var UsedRefreshToken = Request.Cookies["Refresh_Token"];
+            var adminId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var role = User.FindFirstValue(ClaimTypes.Role);
+            
+            var query = new RotateTokenCommand
+            {
+                UsedAccessToken = UsedAccessToken,
+                UsedRefreshToken = UsedRefreshToken!,
+                ClaimsAdminId = adminId!,
+                ClaimsRole = role!,
+            };
+
+            var result = await _mediator.Send(query, cancellationToken);
+
+            Response.Cookies.Append("Refresh_Token", result.NewRefreshToken, new CookieOptions
+            {
+                HttpOnly = true,
+                Secure   = Request.IsHttps,
+                SameSite = SameSiteMode.Lax,
+                Expires  = DateTime.UtcNow.AddDays(1)
+            });
+
+            return Ok(new APIResponse<object>
+            {
+                Data = new
                 {
-                    ["AccessToken"] = result.AccessToken,
-                    ["AccessTokenExpiration"] = result.AccessTokenExpirations
+                    newAccessToken = result.NewAccessToken
                 }
             });
         }

@@ -1,8 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
+using Application.features.Authentication.Commands.RevokeToken;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
@@ -39,6 +39,23 @@ namespace API.common.Extensions
                         Encoding.UTF8.GetBytes(jwtSecret!)
                     )
                 };
+                options.Events = new JwtBearerEvents
+                {
+                    OnAuthenticationFailed = async context =>
+                    {
+                        if (context.Exception is SecurityTokenExpiredException)
+                        {
+                            var usedRefreshToken = context.HttpContext.Request.Cookies["Refresh_Token"];
+
+                            if(usedRefreshToken != null)
+                            {
+                                var mediator = context.HttpContext.RequestServices.GetRequiredService<IMediator>();
+                                await mediator.Send(new RevokeTokenCommand{Token = usedRefreshToken});
+                            }
+                        }
+                    },
+                };
+                
             });
 
             return services;

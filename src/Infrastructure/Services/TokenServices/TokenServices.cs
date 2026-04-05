@@ -36,7 +36,7 @@ namespace Infrastructure.Services.TokenServices
                 issuer: _configuration["JwtSettings:Issuer"],
                 audience: _configuration["JwtSettings:Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(5), // Access token expires in 5 minutes
+                expires: DateTime.UtcNow.AddMinutes(15),
                 signingCredentials: creds
             );
 

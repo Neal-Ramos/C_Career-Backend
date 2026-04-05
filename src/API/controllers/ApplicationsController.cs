@@ -19,6 +19,7 @@ namespace API.controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> AddApplication(
             [FromForm] string firstName,
             [FromForm] string middleName,

@@ -1,3 +1,4 @@
+using API.common.Extensions;
 using API.middleware;
 using Application;
 using Infrastructure;
@@ -12,12 +13,15 @@ builder.Services.AddCors(options =>
         {
             policy.WithOrigins("http://localhost:5173")
                   .AllowAnyHeader()
-                  .AllowAnyMethod();
+                  .AllowAnyMethod()
+                  .AllowCredentials();
         });
 });
 
 
 var isDevelopment = builder.Environment.IsDevelopment();
+
+builder.Services.AddJwtAuthentication(builder.Configuration);
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
@@ -47,5 +51,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+
 
 app.Run();

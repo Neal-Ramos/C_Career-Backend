@@ -8,7 +8,7 @@ namespace Domain.Entities
     public class AdminAccounts
     {
         public int Id {get; private set;}
-        public Guid AdminId {get; private set;}
+        public Guid AdminId {get; private set;} = Guid.NewGuid();
         public string Email {get; set;} = null!;
         public string UserName {get; set;} = null!;
         public string Password {get; set;} = null!;

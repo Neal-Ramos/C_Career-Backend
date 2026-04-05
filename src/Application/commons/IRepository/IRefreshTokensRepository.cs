@@ -6,8 +6,15 @@ namespace Application.commons.IRepository
     {
         Task<RefreshTokens> AddRefreshToken(
             string Token,
+            Guid OwnerId,
             DateTime ExpiryDate,
             DateTime DateCreated
+        );
+        Task<RefreshTokens?> GetByToken(
+            string Token
+        );
+        Task<RefreshTokens?> GetByOwnerId(
+            Guid OwnerId
         );
     }
 }

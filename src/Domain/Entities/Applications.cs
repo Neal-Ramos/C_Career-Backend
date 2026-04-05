@@ -5,7 +5,7 @@ namespace Domain.Entities
     public class Applications
     {
         public int Id {get; private set;}
-        public Guid ApplicationId {get; private set;}
+        public Guid ApplicationId {get; private set;} = Guid.NewGuid();
         public string FirstName {get; set;} = null!;
         public string MiddleName {get; set;} = null!;
         public string LastName {get; set;} = null!;

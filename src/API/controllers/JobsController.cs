@@ -3,6 +3,7 @@ using MediatR;
 using Application.features.Jobs.Queries.GetAllJobs;
 using API.common.Responses;
 using Application.features.Jobs.Queries.GetJobsById;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.controllers
 {
@@ -17,7 +18,8 @@ namespace API.controllers
             _mediatR = mediatR;
         }
 
-        [HttpGet("")]
+        [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> GetAllJobs(
             CancellationToken cancellationToken,
             [FromQuery] string? Search,
@@ -44,6 +46,7 @@ namespace API.controllers
         }
 
         [HttpGet("{JobId}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetJobsById(
             Guid JobId,
             CancellationToken cancellationToken

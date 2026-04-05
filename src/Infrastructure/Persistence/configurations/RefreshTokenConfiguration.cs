@@ -19,6 +19,9 @@ namespace Infrastructure.Persistence.configurations
             builder.Property(a => a.Token)
                 .IsRequired();
 
+            builder.Property(a => a.OwnerId)
+                .IsRequired();
+
             builder.Property(a => a.IsRevoked)
                 .HasDefaultValue(false);
 

@@ -7,7 +7,6 @@ namespace Application.features.Authentication.Commands.Login
         public AdminAccountDto? AdminAccount {get; set;}
         public string? RefreshToken {get; set;}
         public string? AccessToken {get; set;}
-        public DateTime? AccessTokenExpirations {get; set;}
         public string Message {get; set;} = "";
     }
 }
