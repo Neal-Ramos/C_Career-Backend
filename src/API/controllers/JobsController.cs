@@ -4,6 +4,7 @@ using Application.features.Jobs.Queries.GetAllJobs;
 using API.common.Responses;
 using Application.features.Jobs.Queries.GetJobsById;
 using Microsoft.AspNetCore.Authorization;
+using Application.features.Jobs.Commands.CreateJob;
 
 namespace API.controllers
 {
@@ -12,12 +13,10 @@ namespace API.controllers
     public class JobsController : ControllerBase
     {
         private readonly IMediator _mediatR;
-
         public JobsController(IMediator mediatR)
         {
             _mediatR = mediatR;
         }
-
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> GetAllJobs(
@@ -44,7 +43,6 @@ namespace API.controllers
                 }
             });
         }
-
         [HttpGet("{JobId}")]
         [AllowAnonymous]
         public async Task<IActionResult> GetJobsById(
@@ -60,6 +58,20 @@ namespace API.controllers
 
             return Ok(new APIResponse<object>
             {
+                Data = result
+            });
+        }
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> CreateJob(
+            [FromBody] CreateJobCommand req,
+            CancellationToken cancellationToken
+        ){
+            var result = await _mediatR.Send(req, cancellationToken);
+            
+            return Ok(new APIResponse<object>
+            {
+                Message = "Job Created!",
                 Data = result
             });
         }

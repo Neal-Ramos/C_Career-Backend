@@ -12,7 +12,6 @@ namespace Infrastructure.Repository
         {
             _context = appDbContext;
         }
-
         public async Task<ICollection<Jobs>> GetAllJobs(
             int Page,
             int PageSize,
@@ -28,7 +27,6 @@ namespace Infrastructure.Repository
             .Take(PageSize)
             .ToListAsync();
         }
-
         public async Task<int> GetJobsTotal(
             string? Search
         )
@@ -38,12 +36,33 @@ namespace Infrastructure.Repository
 
             return await _context.Jobs.CountAsync();
         }
-
         public async Task<Jobs?> GetJobsById(
             Guid JobId
         )
         {
             return await _context.Jobs.FirstOrDefaultAsync(j => j.JobId == JobId);
+        }
+        public async Task<Jobs> CreateJob(
+            string Title,
+            string? Description,
+            string Roles,
+            string? FileRequirements,
+            Guid CreatorId,
+            DateTime DateCreated
+        )
+        {
+            var newJob = new Jobs
+            {
+                Title = Title,
+                Description = Description,
+                Roles = Roles,
+                FileRequirements = FileRequirements,
+                DateCreated = DateCreated,
+                CreatorId = CreatorId
+            };
+            await _context.Jobs.AddAsync(newJob);
+
+            return newJob;
         }
     }
 }

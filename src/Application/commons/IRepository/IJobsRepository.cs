@@ -15,5 +15,13 @@ namespace Application.commons.IRepository
         Task<Jobs?> GetJobsById(
             Guid JobId
         );
+        Task<Jobs> CreateJob(
+            string Title,
+            string? Description,
+            string Roles,
+            string? FileRequirements,
+            Guid CreatorId,
+            DateTime DateCreated
+        );
     }
 }
