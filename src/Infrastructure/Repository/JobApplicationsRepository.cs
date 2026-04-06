@@ -60,5 +60,11 @@ namespace Infrastructure.Repository
         {
             return _context.Applications.Count();
         }
+        public async Task<Applications?> GetApplicationByGuid(
+            Guid ApplicationId
+        )
+        {
+            return await _context.Applications.FirstOrDefaultAsync(a => a.ApplicationId == ApplicationId);
+        }
     }
 }

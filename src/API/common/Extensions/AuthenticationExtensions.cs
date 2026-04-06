@@ -1,5 +1,3 @@
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using System.Text;
 using Application.features.Authentication.Commands.RevokeToken;
 using MediatR;
@@ -53,7 +51,7 @@ namespace API.common.Extensions
                                 await mediator.Send(new RevokeTokenCommand{Token = usedRefreshToken});
                             }
                         }
-                    },
+                    }
                 };
                 
             });

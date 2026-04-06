@@ -23,5 +23,8 @@ namespace Application.commons.IRepository
         );
         Task<int> GetApplicationsTotal(
         );
+        Task <Applications?> GetApplicationByGuid(
+            Guid ApplicationId
+        );
     }
 }

@@ -46,24 +46,24 @@ namespace Application.features.Authentication.Commands.Login
         )
         {
             var adminAccount = await _adminAccountsRepository.GetByUsername(req.Username) ?? throw new InvalidInputExeption();
-            // var isPasswordMatch = await _hashingService.VerifyString(req.Password, adminAccount.Password);
-            // if(!isPasswordMatch) throw new InvalidInputExeption();
+            var isPasswordMatch = await _hashingService.VerifyString(req.Password, adminAccount.Password);
+            if(!isPasswordMatch) throw new InvalidInputExeption();
 
             if(req.OtpCode == null)// Send Otp Code
             {
-                // var OtpCode = new OtpGenerator().GenerateOtpCode();
-                // var OtpExpiry = DateHelper.GetPHTime().AddMinutes(2);
-                // await _authCodeRepository.CreateCodeFor(
-                //     Code: OtpCode,
-                //     DateCreated: DateHelper.GetPHTime(),
-                //     DateExpiry: OtpExpiry,
-                //     OwnerId: adminAccount.AdminId
-                // );
-                // await _sendEmailService.SendEmailAsync(
-                //     To: adminAccount.Email,
-                //     Subject: "Otp",
-                //     HtmlContent: $"<div><strong>Your Otp Code is {OtpCode}</div>"
-                // );
+                var OtpCode = new OtpGenerator().GenerateOtpCode();
+                var OtpExpiry = DateHelper.GetPHTime().AddMinutes(2);
+                await _authCodeRepository.CreateCodeFor(
+                    Code: OtpCode,
+                    DateCreated: DateHelper.GetPHTime(),
+                    DateExpiry: OtpExpiry,
+                    OwnerId: adminAccount.AdminId
+                );
+                await _sendEmailService.SendEmailAsync(
+                    To: adminAccount.Email,
+                    Subject: "Otp",
+                    HtmlContent: $"<div><strong>Your Otp Code is {OtpCode}</div>"
+                );
                 await _dbContext.SaveChangesAsync(cancellationToken);
                 return new LoginDto
                 {
@@ -72,11 +72,11 @@ namespace Application.features.Authentication.Commands.Login
             }
             else// Validate Otp Code
             {
-                // var OtpCode = await _authCodeRepository.GetCodeByCodeAndEmail(
-                //     Email: adminAccount.Email,
-                //     Code: req.OtpCode
-                // )?? throw new InvalidInputExeption();
-                // if(OtpCode.DateExpiry <= DateHelper.GetPHTime()) throw new InvalidInputExeption("Code Expired");
+                var OtpCode = await _authCodeRepository.GetCodeByCodeAndEmail(
+                    Email: adminAccount.Email,
+                    Code: req.OtpCode
+                )?? throw new InvalidInputExeption();
+                if(OtpCode.DateExpiry <= DateHelper.GetPHTime()) throw new InvalidInputExeption("Code Expired");
 
                 var AccessToken = _tokenService.GenerateJwtToken(
                     AdminId: adminAccount.AdminId,
@@ -90,7 +90,7 @@ namespace Application.features.Authentication.Commands.Login
                     ExpiryDate: DateHelper.GetPHTime().AddDays(1),
                     DateCreated: DateHelper.GetPHTime()
                 );
-                // OtpCode.IsUsed = true;
+                OtpCode.IsUsed = true;
 
                 await _dbContext.SaveChangesAsync(cancellationToken);
                 return new LoginDto

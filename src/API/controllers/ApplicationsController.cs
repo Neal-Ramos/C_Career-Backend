@@ -2,6 +2,7 @@ using API.common.Responses;
 using Application.features.Applications.Commands.AddApplication;
 using Application.features.Applications.DTOs;
 using Application.features.Applications.Queries.GetApplications;
+using Application.features.Applications.Queries.GetApplicatonBuGuid;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -17,7 +18,6 @@ namespace API.controllers
         {
             _mediator = mediator;
         }
-
         [HttpPost]
         [AllowAnonymous]
         public async Task<IActionResult> AddApplication(
@@ -61,7 +61,6 @@ namespace API.controllers
                 Data = result
             });
         }
-
         [HttpGet]
         [AllowAnonymous]
         public async Task<IActionResult> GetApplications(
@@ -85,6 +84,24 @@ namespace API.controllers
                     ["TotalRecord"] = result.TotalRecord,
                     ["TotalPages"] = result.TotalPages
                 }
+            });
+        }
+        [HttpGet("{ApplicationId}")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetApplicationByGuid(
+            Guid ApplicationId,
+            CancellationToken cancellationToken
+        )
+        {
+            var query = new GetApplicationByGuidQuery
+            {
+                ApplicationId = ApplicationId
+            };
+            var result = await _mediator.Send(query, cancellationToken);
+
+            return Ok(new APIResponse<object>
+            {
+                Data = result
             });
         }
     }
