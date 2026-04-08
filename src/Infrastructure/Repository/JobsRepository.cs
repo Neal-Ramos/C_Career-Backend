@@ -48,7 +48,8 @@ namespace Infrastructure.Repository
             string Roles,
             string? FileRequirements,
             Guid CreatorId,
-            DateTime DateCreated
+            DateTime DateCreated,
+            string CustomFields
         )
         {
             var newJob = new Jobs
@@ -58,7 +59,8 @@ namespace Infrastructure.Repository
                 Roles = Roles,
                 FileRequirements = FileRequirements,
                 DateCreated = DateCreated,
-                CreatorId = CreatorId
+                CreatorId = CreatorId,
+                CustomFields = CustomFields
             };
             await _context.Jobs.AddAsync(newJob);
 

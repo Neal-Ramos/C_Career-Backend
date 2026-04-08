@@ -5,6 +5,8 @@ using API.common.Responses;
 using Application.features.Jobs.Queries.GetJobsById;
 using Microsoft.AspNetCore.Authorization;
 using Application.features.Jobs.Commands.CreateJob;
+using API.contracts.Jobs;
+using System.Security.Claims;
 
 namespace API.controllers
 {
@@ -38,7 +40,7 @@ namespace API.controllers
                 Data = result.Jobs,
                 Meta = new Dictionary<string, object>
                 {
-                    ["TotalRecord"] = result.TotalRecord,
+                    ["TotalRecords"] = result.TotalRecord,
                     ["TotalPages"] = result.TotalPages
                 }
             });
@@ -64,10 +66,21 @@ namespace API.controllers
         [HttpPost]
         [Authorize]
         public async Task<IActionResult> CreateJob(
-            [FromBody] CreateJobCommand req,
+            [FromBody] PostJobRequest req,
             CancellationToken cancellationToken
         ){
-            var result = await _mediatR.Send(req, cancellationToken);
+            var adminId = User.FindFirstValue(ClaimTypes.NameIdentifier)?? throw new UnauthorizedAccessException();
+            var query = new CreateJobCommand
+            {
+                Title = req.Title,
+                Description = req.Description,
+                Roles = req.Roles,
+                CustomFields = req.CustomFields,
+                FileRequirements = req.FileRequirements,
+                CreatorId = Guid.Parse(adminId)
+            };
+
+            var result = await _mediatR.Send(query, cancellationToken);
             
             return Ok(new APIResponse<object>
             {

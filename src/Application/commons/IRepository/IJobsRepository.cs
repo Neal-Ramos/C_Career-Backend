@@ -21,7 +21,8 @@ namespace Application.commons.IRepository
             string Roles,
             string? FileRequirements,
             Guid CreatorId,
-            DateTime DateCreated
+            DateTime DateCreated,
+            string CustomFields
         );
     }
 }

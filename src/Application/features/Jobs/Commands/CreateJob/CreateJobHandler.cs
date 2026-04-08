@@ -33,7 +33,8 @@ namespace Application.features.Jobs.Commands.CreateJob
                 Roles : req.Roles,
                 FileRequirements : req.FileRequirements,
                 CreatorId : req.CreatorId,
-                DateCreated : DateHelper.GetPHTime()
+                DateCreated : DateHelper.GetPHTime(),
+                CustomFields: req.CustomFields
             );
             await _dbContext.SaveChangesAsync(cancellationToken);
 

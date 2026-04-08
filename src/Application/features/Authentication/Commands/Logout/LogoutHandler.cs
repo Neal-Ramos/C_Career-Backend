@@ -1,14 +1,15 @@
+
 using Application.commons.IRepository;
 using Application.exeptions;
 using MediatR;
 
-namespace Application.features.Authentication.Commands.RevokeToken
+namespace Application.features.Authentication.Commands.Logout
 {
-    public class RevokeTokenHandler: IRequestHandler<RevokeTokenCommand, RevokeTokenDto>
+    public class LogoutHandler: IRequestHandler<LogoutCommand, LogoutDto>
     {
         private readonly IRefreshTokensRepository _refreshTokensRepository;
         private readonly IDbContext _dbContext;
-        public RevokeTokenHandler(
+        public LogoutHandler(
             IRefreshTokensRepository refreshTokensRepository,
             IDbContext dbContext
         )
@@ -16,18 +17,19 @@ namespace Application.features.Authentication.Commands.RevokeToken
             _refreshTokensRepository = refreshTokensRepository;
             _dbContext = dbContext;
         }
-
-        public async Task<RevokeTokenDto> Handle(
-            RevokeTokenCommand req,
+        public async Task<LogoutDto> Handle(
+            LogoutCommand req,
             CancellationToken cancellationToken
         )
         {
-            var token = await _refreshTokensRepository.GetByToken(req.Token)?? throw new NotFoundExeption();
-            token!.IsRevoked = true;
+            var token = await _refreshTokensRepository.GetByToken(req.UsedRefreshToken)?? throw new NotFoundExeption("RefreshToken not Found");
+            token.IsRevoked = true;
 
             await _dbContext.SaveChangesAsync(cancellationToken);
-
-            return new RevokeTokenDto{};
+            return new LogoutDto
+            {
+                Message = "Logout Success"
+            };
         }
     }
 }

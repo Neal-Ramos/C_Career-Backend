@@ -3,6 +3,7 @@ using System.Security.Claims;
 using API.common.Responses;
 using Application.commons.Helpers;
 using Application.features.Authentication.Commands.Login;
+using Application.features.Authentication.Commands.Logout;
 using Application.features.Authentication.Commands.RotateToken;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -21,7 +22,6 @@ namespace API.controllers
         {
             _mediator = mediator;
         }
-
         [HttpPost("login")]
         [AllowAnonymous]
         public async Task<IActionResult> Login(
@@ -59,7 +59,6 @@ namespace API.controllers
 
             return Ok(response);
         }
-
         [HttpPost("rotateToken")]
         [Authorize]
         public async Task<IActionResult> RotateToken(
@@ -95,6 +94,20 @@ namespace API.controllers
                 {
                     newAccessToken = result.NewAccessToken
                 }
+            });
+        }
+        [HttpPost("logout")]
+        [Authorize]
+        public async Task<IActionResult> Logout(
+            LogoutCommand req,
+            CancellationToken cancellationToken
+        )
+        {
+            var result = await _mediator.Send(req, cancellationToken);
+
+            return Ok(new APIResponse<object>
+            {
+                Message = result.Message
             });
         }
     }

@@ -1,16 +1,12 @@
 
-using Application.commons.DTOs;
-using MediatR;
-
-namespace Application.features.Jobs.Commands.CreateJob
+namespace API.contracts.Jobs
 {
-    public class CreateJobCommand: IRequest<JobDto>
+    public class PostJobRequest
     {
         public string Title {get; set;} = null!;
         public string? Description {get; set;}
         public string Roles {get; set;} = null!;
         public string CustomFields {get; set;} = null!;
         public string? FileRequirements {get; set;}
-        public Guid CreatorId {get; set;}
     }
 }
