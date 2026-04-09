@@ -55,7 +55,8 @@ namespace Application.features.Applications.Commands.AddApplication
                 GraduationYear: req.GraduationYear,
                 SubmittedFile: JsonSerializer.Serialize(SubmittedFile),
                 DateSubmitted: DateHelper.GetPHTime(),
-                JobId: req.JobId
+                JobId: req.JobId,
+                CustomFields: req.CustomFields
             );
             await _sendEmail.SendEmailAsync(
                 To: req.Email,

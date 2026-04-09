@@ -14,6 +14,7 @@ namespace Domain.Entities
         public string UniversityName {get; set;} = null!;
         public string Degree {get; set;} = null!;
         public int GraduationYear {get; set;}
+        public string CustomFields {get; set;} = "[]";
         public string FileSubmitted {get; set;} = null!;
         public ApplicationStatusEnum Status {get; set;} = ApplicationStatusEnum.Pending;
         public DateTime DateSubmitted {get; set;}
