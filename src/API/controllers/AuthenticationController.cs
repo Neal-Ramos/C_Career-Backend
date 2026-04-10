@@ -87,7 +87,6 @@ namespace API.controllers
                 SameSite = SameSiteMode.Lax,
                 Expires  = DateTime.UtcNow.AddDays(1)
             });
-
             return Ok(new APIResponse<object>
             {
                 Data = new

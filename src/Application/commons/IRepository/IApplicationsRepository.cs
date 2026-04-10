@@ -6,7 +6,7 @@ namespace Application.commons.IRepository
     {
         Task<Applications> AddApplication(
             string FirstName,
-            string MiddleName,
+            string? MiddleName,
             string LastName,
             string Email,
             string ContactNumber,

@@ -15,7 +15,7 @@ namespace Infrastructure.Repository
         
         public async Task<Applications> AddApplication(
             string FirstName,
-            string MiddleName,
+            string? MiddleName,
             string LastName,
             string Email,
             string ContactNumber,

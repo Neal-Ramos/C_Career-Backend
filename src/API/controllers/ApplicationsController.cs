@@ -22,7 +22,7 @@ namespace API.controllers
         [AllowAnonymous]
         public async Task<IActionResult> AddApplication(
             [FromForm] string firstName,
-            [FromForm] string middleName,
+            [FromForm] string? middleName,
             [FromForm] string lastName,
             [FromForm] string email,
             [FromForm] string contactNumber,
