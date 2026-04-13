@@ -1,6 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-using System.Text.Json;
-
 namespace Domain.Entities
 {
     public class Jobs
@@ -13,11 +10,11 @@ namespace Domain.Entities
         public string CustomFields {get; set;} = "[]";
         public string? FileRequirements {set; get;}
         public DateTime DateCreated {set; get;}
-        public string? EditedBy {get; set;}
 
         //
-        public Guid CreatorId {get; set;}
-        public AdminAccounts AdminAccounts {get; set;} = null!;
+        public Guid? AdminId {get; set;}
+        public AdminAccounts? AdminAccounts {get; set;} = null!;
         public ICollection<Applications>? JobApplications {get; set;}
+        public ICollection<JobsEditHistory>? EditHistory {get; set;}
     }
 }

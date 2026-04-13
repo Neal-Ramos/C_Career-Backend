@@ -37,19 +37,22 @@ namespace Infrastructure.Persistence.configurations
 
             builder.Property(j => j.DateCreated)
                 .IsRequired();
-
-            builder.Property(j => j.EditedBy);
             
             //relation
             builder.HasOne(j => j.AdminAccounts)
                 .WithMany(a => a.CreatedJobs)
-                .HasForeignKey(a => a.CreatorId)
-                .HasPrincipalKey(j => j.AdminId);
+                .HasForeignKey(a => a.AdminId)
+                .HasPrincipalKey(j => j.AdminId)
+                .OnDelete(DeleteBehavior.SetNull);
 
             builder.HasMany(j => j.JobApplications)
                 .WithOne(a => a.Job)
                 .HasForeignKey(a => a.JobId)
                 .HasPrincipalKey(j => j.JobId);
-            }
+            builder.HasMany(j => j.EditHistory)
+                .WithOne(e => e.Job)
+                .HasForeignKey(e => e.JobId)
+                .HasPrincipalKey(j => j.JobId);
+        }
     }
 }

@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
@@ -19,5 +15,6 @@ namespace Domain.Entities
         //relations
         public ICollection<AuthCodes>? AuthCodes {get; set;}
         public ICollection<Jobs>? CreatedJobs {get; set;}
+        public ICollection<JobsEditHistory>? JobsEditedHistory {get; set;}
     }
 }

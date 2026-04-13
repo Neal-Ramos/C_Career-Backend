@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Application.features.Jobs.Commands.CreateJob;
 using API.contracts.Jobs;
 using System.Security.Claims;
+using Application.features.Jobs.Commands.UpdateJob;
 
 namespace API.controllers
 {
@@ -85,6 +86,32 @@ namespace API.controllers
             return Ok(new APIResponse<object>
             {
                 Message = "Job Created!",
+                Data = result
+            });
+        }
+        [HttpPut]
+        [Authorize]
+        public async Task<IActionResult> UpdateJob(
+            [FromBody] UpdateJobReq req,
+            CancellationToken cancellationToken
+        ){
+            var adminId = User.FindFirstValue(ClaimTypes.NameIdentifier)?? throw new UnauthorizedAccessException();
+            var query = new UpdateJobCommand
+            {
+                JobId= Guid.Parse(req.JobId),
+                EditorId= Guid.Parse(adminId),
+                Title= req.Title,
+                Description = req.Description,
+                Roles= req.Roles,
+                CustomFields= req.CustomFields,
+                FileRequirements= req.FileRequirements,
+                EditSummary= req.EditSummary
+            };
+            var result = await _mediatR.Send(query, cancellationToken);
+
+            return Ok(new APIResponse<object>
+            {
+                Message = "Job Updated",
                 Data = result
             });
         }

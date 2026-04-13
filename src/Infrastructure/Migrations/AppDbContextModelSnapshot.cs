@@ -199,7 +199,7 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<Guid>("CreatorId")
+                    b.Property<Guid?>("AdminId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("CustomFields")
@@ -211,9 +211,6 @@ namespace Infrastructure.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("EditedBy")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FileRequirements")
@@ -237,12 +234,50 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CreatorId");
+                    b.HasIndex("AdminId");
 
                     b.HasIndex("JobId")
                         .IsUnique();
 
                     b.ToTable("Jobs", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.JobsEditHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("DateEdited")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("EditId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier")
+                        .HasDefaultValueSql("NEWID()");
+
+                    b.Property<string>("EditSummary")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<Guid?>("EditorId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("JobId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EditId");
+
+                    b.HasIndex("EditorId");
+
+                    b.HasIndex("JobId");
+
+                    b.ToTable("JobsEditHistory", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.RefreshTokens", b =>
@@ -306,12 +341,30 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("Domain.Entities.AdminAccounts", "AdminAccounts")
                         .WithMany("CreatedJobs")
-                        .HasForeignKey("CreatorId")
+                        .HasForeignKey("AdminId")
                         .HasPrincipalKey("AdminId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("AdminAccounts");
+                });
+
+            modelBuilder.Entity("Domain.Entities.JobsEditHistory", b =>
+                {
+                    b.HasOne("Domain.Entities.AdminAccounts", "EditedBy")
+                        .WithMany("JobsEditedHistory")
+                        .HasForeignKey("EditorId")
+                        .HasPrincipalKey("AdminId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("Domain.Entities.Jobs", "Job")
+                        .WithMany("EditHistory")
+                        .HasForeignKey("JobId")
+                        .HasPrincipalKey("JobId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("EditedBy");
+
+                    b.Navigation("Job");
                 });
 
             modelBuilder.Entity("Domain.Entities.AdminAccounts", b =>
@@ -319,10 +372,14 @@ namespace Infrastructure.Migrations
                     b.Navigation("AuthCodes");
 
                     b.Navigation("CreatedJobs");
+
+                    b.Navigation("JobsEditedHistory");
                 });
 
             modelBuilder.Entity("Domain.Entities.Jobs", b =>
                 {
+                    b.Navigation("EditHistory");
+
                     b.Navigation("JobApplications");
                 });
 #pragma warning restore 612, 618

@@ -53,7 +53,12 @@ namespace Infrastructure.Persistence.configurations
 
             builder.HasMany(a => a.CreatedJobs)
                 .WithOne(j => j.AdminAccounts)
-                .HasForeignKey(j => j.CreatorId)
+                .HasForeignKey(j => j.AdminId)
+                .HasPrincipalKey(a => a.AdminId);
+                
+            builder.HasMany(a => a.JobsEditedHistory)
+                .WithOne(e => e.EditedBy)
+                .HasForeignKey(e => e.EditorId)
                 .HasPrincipalKey(a => a.AdminId);
         }
     }

@@ -59,7 +59,7 @@ namespace Infrastructure.Repository
                 Roles = Roles,
                 FileRequirements = FileRequirements,
                 DateCreated = DateCreated,
-                CreatorId = CreatorId,
+                AdminId = CreatorId,
                 CustomFields = CustomFields
             };
             await _context.Jobs.AddAsync(newJob);

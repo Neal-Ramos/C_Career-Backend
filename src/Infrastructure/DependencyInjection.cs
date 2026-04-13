@@ -44,6 +44,7 @@ namespace Infrastructure
             services.AddScoped<IAdminAccountsRepository, AdminAccountsRepository>();
             services.AddScoped<IAuthCodeRepository, AuthCodeRepository>();
             services.AddScoped<IRefreshTokensRepository, RefreshTokenRepository>();
+            services.AddScoped<IJobsEditHistoryRepository, JobsEditHistoryRepository>();
 
             services.AddScoped<IHashingService, BcryptRepository>();
 

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260410023854_ApplicationAdjust")]
-    partial class ApplicationAdjust
+    [Migration("20260413070714_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -216,9 +216,6 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("EditedBy")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("FileRequirements")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -246,6 +243,36 @@ namespace Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("Jobs", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.JobsEditHistory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("DateEdited")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("EditId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("EditSummary")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("EditedById")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("EditorId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EditedById");
+
+                    b.ToTable("JobsEditHistory");
                 });
 
             modelBuilder.Entity("Domain.Entities.RefreshTokens", b =>
@@ -317,11 +344,24 @@ namespace Infrastructure.Migrations
                     b.Navigation("AdminAccounts");
                 });
 
+            modelBuilder.Entity("Domain.Entities.JobsEditHistory", b =>
+                {
+                    b.HasOne("Domain.Entities.AdminAccounts", "EditedBy")
+                        .WithMany("JobsEditedHistory")
+                        .HasForeignKey("EditedById")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("EditedBy");
+                });
+
             modelBuilder.Entity("Domain.Entities.AdminAccounts", b =>
                 {
                     b.Navigation("AuthCodes");
 
                     b.Navigation("CreatedJobs");
+
+                    b.Navigation("JobsEditedHistory");
                 });
 
             modelBuilder.Entity("Domain.Entities.Jobs", b =>

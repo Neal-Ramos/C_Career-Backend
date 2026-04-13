@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitMigrate : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -37,6 +37,7 @@ namespace Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    OwnerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Token = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     IsRevoked = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
                     ExpiryDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -82,9 +83,9 @@ namespace Infrastructure.Migrations
                     Title = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Roles = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
+                    CustomFields = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FileRequirements = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DateCreated = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EditedBy = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
@@ -100,6 +101,29 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "JobsEditHistory",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    EditId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    DateEdited = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EditSummary = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    EditorId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    EditedById = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_JobsEditHistory", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_JobsEditHistory_AdminAccounts_EditedById",
+                        column: x => x.EditedById,
+                        principalTable: "AdminAccounts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Applications",
                 columns: table => new
                 {
@@ -107,13 +131,14 @@ namespace Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ApplicationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false, defaultValueSql: "NEWID()"),
                     FirstName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    MiddleName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     ContactNumber = table.Column<string>(type: "nvarchar(11)", maxLength: 11, nullable: false),
                     UniversityName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Degree = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    MiddleName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
                     GraduationYear = table.Column<int>(type: "int", nullable: false),
+                    CustomFields = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     FileSubmitted = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false, defaultValue: "Pending"),
                     DateSubmitted = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -165,6 +190,11 @@ namespace Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_JobsEditHistory_EditedById",
+                table: "JobsEditHistory",
+                column: "EditedById");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_RefreshTokens_Token",
                 table: "RefreshTokens",
                 column: "Token");
@@ -178,6 +208,9 @@ namespace Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "AuthCodes");
+
+            migrationBuilder.DropTable(
+                name: "JobsEditHistory");
 
             migrationBuilder.DropTable(
                 name: "RefreshTokens");

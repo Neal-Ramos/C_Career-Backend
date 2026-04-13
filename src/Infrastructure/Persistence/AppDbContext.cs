@@ -16,6 +16,7 @@ namespace Infrastructure.Persistence
         public DbSet<AdminAccounts> AdminAccounts => Set<AdminAccounts>();
         public DbSet<AuthCodes> AuthCodes => Set<AuthCodes>();
         public DbSet<RefreshTokens> RefreshTokens => Set<RefreshTokens>();
+        public DbSet<JobsEditHistory> JobsEditHistory => Set<JobsEditHistory>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -24,6 +25,7 @@ namespace Infrastructure.Persistence
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(AuthCodesConfigurations).Assembly);
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(JobsConfigurations).Assembly);
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(RefreshTokenConfiguration).Assembly);
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(JobsEditHistoryConfigurations).Assembly);
         }
     }
 }
