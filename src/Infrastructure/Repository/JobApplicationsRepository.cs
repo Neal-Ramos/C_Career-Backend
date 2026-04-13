@@ -1,4 +1,7 @@
+using Application.commons.DTOs;
 using Application.commons.IRepository;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Domain.Entities;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -8,9 +11,14 @@ namespace Infrastructure.Repository
     public class JobApplicationsRepository: IApplicationsRepository
     {
         private readonly AppDbContext _context;
-        public JobApplicationsRepository(AppDbContext appDbContext)
+        private readonly IMapper _mapper;
+        public JobApplicationsRepository(
+            AppDbContext appDbContext,
+            IMapper mapper
+        )
         {
             _context = appDbContext;
+            _mapper = mapper;
         }
         
         public async Task<Applications> AddApplication(
@@ -67,6 +75,14 @@ namespace Infrastructure.Repository
         )
         {
             return await _context.Applications.FirstOrDefaultAsync(a => a.ApplicationId == ApplicationId);
+        }
+        public async Task<ApplicationWithRelationsDto?> GetApplicationByGuidWithRelation(
+            Guid ApplicationId
+        )
+        {
+            return await _context.Applications
+                .ProjectTo<ApplicationWithRelationsDto>(_mapper.ConfigurationProvider)
+                .FirstOrDefaultAsync(a => a.ApplicationId == ApplicationId);
         }
     }
 }

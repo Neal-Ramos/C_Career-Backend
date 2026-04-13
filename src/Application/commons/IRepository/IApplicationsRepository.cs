@@ -1,3 +1,4 @@
+using Application.commons.DTOs;
 using Domain.Entities;
 
 namespace Application.commons.IRepository
@@ -25,6 +26,9 @@ namespace Application.commons.IRepository
         Task<int> GetApplicationsTotal(
         );
         Task <Applications?> GetApplicationByGuid(
+            Guid ApplicationId
+        );
+        Task <ApplicationWithRelationsDto?> GetApplicationByGuidWithRelation(
             Guid ApplicationId
         );
     }

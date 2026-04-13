@@ -1,6 +1,7 @@
 using API.common.Responses;
 using Application.features.Applications.Commands.AddApplication;
 using Application.features.Applications.DTOs;
+using Application.features.Applications.Queries.GetApplicationByGuidWithRelation;
 using Application.features.Applications.Queries.GetApplications;
 using Application.features.Applications.Queries.GetApplicatonBuGuid;
 using MediatR;
@@ -38,7 +39,8 @@ namespace API.controllers
             {
                 FileName = file.FileName,
                 ContentType = file.ContentType,
-                Content = file.OpenReadStream()
+                Content = file.OpenReadStream(),
+                Name = file.Name
             }).ToList();
             var query = new AddApplicationCommand
             {
@@ -89,13 +91,13 @@ namespace API.controllers
             });
         }
         [HttpGet("{ApplicationId}")]
-        [AllowAnonymous]
-        public async Task<IActionResult> GetApplicationByGuid(
+        [Authorize]
+        public async Task<IActionResult> GetApplicationByGuidWithRelation(
             Guid ApplicationId,
             CancellationToken cancellationToken
         )
         {
-            var query = new GetApplicationByGuidQuery
+            var query = new GetApplicationByGuidWithRelationQuery
             {
                 ApplicationId = ApplicationId
             };

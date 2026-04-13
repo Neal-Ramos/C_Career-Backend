@@ -36,9 +36,10 @@ namespace Application.features.Applications.Commands.AddApplication
             var SubmittedFile = await Task.WhenAll(
                 req.SubmittedFile.Select(file =>
                     _storageRepository.UploadAsync(
+                        DocumentName: file.Name,
                         FileName: file.FileName,
-                        Name: file.Name,
                         ContentType: file.ContentType,
+                        Format: Path.GetExtension(file.FileName).TrimStart('.'),
                         Content: file.Content
                     )
                 )

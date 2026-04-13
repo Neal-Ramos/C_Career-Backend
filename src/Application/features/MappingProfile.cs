@@ -10,6 +10,7 @@ namespace Application
         {
             CreateMap<Jobs, JobDto>();
             CreateMap<Applications, ApplicationDto>();
+            CreateMap<Applications, ApplicationWithRelationsDto>();
             CreateMap<AdminAccounts, AdminAccountDto>();
         }
     }

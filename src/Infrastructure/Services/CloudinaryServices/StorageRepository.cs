@@ -21,9 +21,10 @@ namespace Infrastructure.Services
         }
 
         public async Task<UploadAsyncDto> UploadAsync(
+            string DocumentName,
             string FileName,
-            string Name,
             string ContentType,
+            string Format,
             Stream Content
         )
         {
@@ -41,6 +42,10 @@ namespace Infrastructure.Services
 
             return new UploadAsyncDto
             {
+                DocumentName =  DocumentName,
+                FileName = FileName,
+                ContentType = ContentType,
+                Format = Format,
                 PublicId = result.PublicId,
                 Path = result.DisplayName
             };
