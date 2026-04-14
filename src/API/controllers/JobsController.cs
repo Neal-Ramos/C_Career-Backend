@@ -8,6 +8,7 @@ using Application.features.Jobs.Commands.CreateJob;
 using API.contracts.Jobs;
 using System.Security.Claims;
 using Application.features.Jobs.Commands.UpdateJob;
+using Application.features.Jobs.Commands.DeleteJob;
 
 namespace API.controllers
 {
@@ -112,6 +113,21 @@ namespace API.controllers
             return Ok(new APIResponse<object>
             {
                 Message = "Job Updated",
+                Data = result
+            });
+        }
+        [HttpDelete]
+        [Authorize]
+        public async Task<IActionResult> DeleteJob(
+            DeleteJobCommand req,
+            CancellationToken cancellationToken
+        )
+        {
+            var result = await _mediatR.Send(req, cancellationToken);
+
+            return Ok(new APIResponse<object>
+            {
+                Message = "Job Deleted",
                 Data = result
             });
         }

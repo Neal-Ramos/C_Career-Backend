@@ -1,3 +1,5 @@
+using Application.commons.DTOs;
+
 namespace Application.features.Authentication.Commands.RotateToken
 {
     public class RotateTokenDto

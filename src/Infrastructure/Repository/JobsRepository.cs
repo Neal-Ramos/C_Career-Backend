@@ -66,5 +66,14 @@ namespace Infrastructure.Repository
 
             return newJob;
         }
+        public async Task<Jobs?> DeleteJobByGuid(
+            Guid JobId
+        )
+        {
+            var job = await _context.Jobs.FirstOrDefaultAsync(a => a.JobId == JobId);
+            if(job != null) _context.Jobs.Remove(job);
+            
+            return job;
+        }
     }
 }

@@ -24,5 +24,8 @@ namespace Application.commons.IRepository
             DateTime DateCreated,
             string CustomFields
         );
+        Task<Jobs?> DeleteJobByGuid(
+            Guid JobId
+        );
     }
 }
