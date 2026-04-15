@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
@@ -16,7 +12,7 @@ namespace Domain.Entities
         public bool IsUsed {get; set;} = false;
         
         //Relations
-        public Guid OwnerId {get; set;}
-        public AdminAccounts Owner {get; set;} = null!;
+        public Guid? OwnerId {get; set;}
+        public AdminAccounts? Owner {get; set;} = null!;
     }
 }

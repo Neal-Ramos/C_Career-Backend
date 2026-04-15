@@ -68,6 +68,11 @@ namespace Infrastructure.Persistence.configurations
                 .WithMany(j => j.JobApplications)
                 .HasForeignKey(a => a.JobId)
                 .HasPrincipalKey(j => j.JobId);
+
+            builder.HasOne(a => a.ProcessedBy)
+                .WithMany(app => app.ProcessedApplications)
+                .HasForeignKey(app => app.AdminId)
+                .HasPrincipalKey(a => a.AdminId);
         }
     }
 }

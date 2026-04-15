@@ -42,13 +42,13 @@ namespace Infrastructure.Persistence.configurations
             builder.HasOne(j => j.AdminAccounts)
                 .WithMany(a => a.CreatedJobs)
                 .HasForeignKey(a => a.AdminId)
-                .HasPrincipalKey(j => j.AdminId)
-                .OnDelete(DeleteBehavior.SetNull);
+                .HasPrincipalKey(j => j.AdminId);
 
             builder.HasMany(j => j.JobApplications)
                 .WithOne(a => a.Job)
                 .HasForeignKey(a => a.JobId)
                 .HasPrincipalKey(j => j.JobId);
+                
             builder.HasMany(j => j.EditHistory)
                 .WithOne(e => e.Job)
                 .HasForeignKey(e => e.JobId)

@@ -1,9 +1,11 @@
+using System.Security.Claims;
 using API.common.Responses;
+using API.contracts.Application;
 using Application.features.Applications.Commands.AddApplication;
+using Application.features.Applications.Commands.PatchApplicationStatus;
 using Application.features.Applications.DTOs;
 using Application.features.Applications.Queries.GetApplicationByGuidWithRelation;
 using Application.features.Applications.Queries.GetApplications;
-using Application.features.Applications.Queries.GetApplicatonBuGuid;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -93,7 +95,7 @@ namespace API.controllers
         [HttpGet("{ApplicationId}")]
         [Authorize]
         public async Task<IActionResult> GetApplicationByGuidWithRelation(
-            Guid ApplicationId,
+            [FromRoute] Guid ApplicationId,
             CancellationToken cancellationToken
         )
         {
@@ -105,6 +107,30 @@ namespace API.controllers
 
             return Ok(new APIResponse<object>
             {
+                Data = result
+            });
+        }
+        [HttpPatch("{applicationId}")]
+        [Authorize]
+        public async Task<IActionResult> PatchApplicationStatus(
+            [FromRoute] Guid applicationId,
+            [FromBody] PatchApplicationStatusReq req,
+            CancellationToken cancellationToken
+        )
+        {
+            var adminId = User.FindFirstValue(ClaimTypes.NameIdentifier)?? throw new UnauthorizedAccessException();
+            var query = new PatchApplicationStatusCommand
+            {
+                ApplicationId = applicationId,
+                AdminId = Guid.Parse(adminId),
+                Status = req.Status
+            };
+
+            var result = await _mediator.Send(query, cancellationToken);
+
+            return Ok(new APIResponse<object>
+            {
+                Message = $"Application is Now {result.Status}",
                 Data = result
             });
         }

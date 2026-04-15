@@ -2,7 +2,7 @@ namespace Domain.enums
 {
     public enum ApplicationStatusEnum
     {
-        Pending ,
+        Pending,
         Approved,
         Declined
     }

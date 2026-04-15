@@ -23,5 +23,8 @@ namespace Domain.Entities
         //relation
         public Guid JobId {get; set;}
         public Jobs Job {get; set;} = null!;
+        public Guid? AdminId {get; set;}
+        public AdminAccounts? ProcessedBy{get; set;}
+        
     }
 }

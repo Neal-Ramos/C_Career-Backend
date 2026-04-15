@@ -24,6 +24,7 @@ namespace API.middleware
             {
                 InvalidInputExeption => (401, "INVALID_INPUTS", exception.Message),
                 NotFoundExeption => (404, "DATA_NOT_FOUND", exception.Message),
+                ConflictExeption => (409, "DATABASE_CONFLICT", exception.Message),
                 _ => (500, "SERVER_ERROR", "An unexpected error occurred.")
             };
 

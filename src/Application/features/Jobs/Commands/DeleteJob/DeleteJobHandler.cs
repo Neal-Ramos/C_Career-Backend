@@ -26,7 +26,7 @@ namespace Application.features.Jobs.Commands.DeleteJob
         )
         {
             var deleteJob = await _jobsRepository.DeleteJobByGuid(JobId: req.JobId)?? throw new NotFoundExeption("Job Not Found");
-            // await _dbContext.SaveChangesAsync(cancellationToken);
+            await _dbContext.SaveChangesAsync(cancellationToken);
 
             return deleteJob.JobId;
         }

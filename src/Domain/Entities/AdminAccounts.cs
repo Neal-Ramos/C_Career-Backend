@@ -1,4 +1,3 @@
-
 namespace Domain.Entities
 {
     public class AdminAccounts
@@ -16,5 +15,6 @@ namespace Domain.Entities
         public ICollection<AuthCodes>? AuthCodes {get; set;}
         public ICollection<Jobs>? CreatedJobs {get; set;}
         public ICollection<JobsEditHistory>? JobsEditedHistory {get; set;}
+        public ICollection<Applications>? ProcessedApplications {get; set;}
     }
 }

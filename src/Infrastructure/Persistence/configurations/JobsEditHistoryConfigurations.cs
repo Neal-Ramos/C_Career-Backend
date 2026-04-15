@@ -29,13 +29,11 @@ namespace Infrastructure.Persistence.configurations
             builder.HasOne(e => e.EditedBy)
                 .WithMany(a => a.JobsEditedHistory)
                 .HasForeignKey(a => a.EditorId)
-                .HasPrincipalKey(e => e.AdminId)
-                .OnDelete(DeleteBehavior.SetNull);
+                .HasPrincipalKey(e => e.AdminId);
             builder.HasOne(e => e.Job)
                 .WithMany(a => a.EditHistory)
                 .HasForeignKey(a => a.JobId)
-                .HasPrincipalKey(e => e.JobId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .HasPrincipalKey(e => e.JobId);
         }
     }
 }

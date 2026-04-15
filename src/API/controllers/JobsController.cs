@@ -50,7 +50,7 @@ namespace API.controllers
         [HttpGet("{JobId}")]
         [AllowAnonymous]
         public async Task<IActionResult> GetJobsById(
-            Guid JobId,
+            [FromRoute] Guid JobId,
             CancellationToken cancellationToken
         )
         {
