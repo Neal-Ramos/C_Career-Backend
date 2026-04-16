@@ -44,6 +44,8 @@ namespace Infrastructure.Persistence.configurations
             builder.Property(a => a.MiddleName)
                 .IsRequired(false)
                 .HasMaxLength(100);
+            builder.Property(a => a.BirthDate)
+                .IsRequired();
 
             //relations
             builder.HasMany(a => a.AuthCodes)

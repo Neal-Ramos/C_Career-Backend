@@ -31,6 +31,7 @@ namespace Infrastructure.Persistence
                         Password = BCrypt.Net.BCrypt.HashPassword("admin"),
                         FirstName = "Neal",
                         LastName = "Ramos",
+                        BirthDate = new DateTime(2004, 9, 18)
                     }
                 );
                 await context.SaveChangesAsync();

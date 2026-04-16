@@ -31,7 +31,9 @@ namespace API.controllers
             [FromForm] string contactNumber,
             [FromForm] string universityName,
             [FromForm] string degree,
+            [FromForm] string location,
             [FromForm] string graduationYear,
+            [FromForm] DateTime birthDate,
             [FromForm] string customFields,
             [FromForm] Guid jobId,
             CancellationToken cancellationToken
@@ -53,7 +55,9 @@ namespace API.controllers
                 ContactNumber = contactNumber,
                 UniversityName = universityName,
                 Degree = degree,
+                Location = location,
                 CustomFields = customFields,
+                BirthDate = birthDate,
                 GraduationYear = int.Parse(graduationYear),
                 SubmittedFile = SubmittedFile,
                 JobId = jobId

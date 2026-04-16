@@ -49,7 +49,14 @@ namespace Infrastructure.Persistence.configurations
                 .IsRequired()
                 .HasMaxLength(100);
 
+            builder.Property(a => a.Location)
+                .HasMaxLength(500)
+                .IsRequired();
+
             builder.Property(a => a.GraduationYear)
+                .IsRequired();
+
+            builder.Property(a => a.BirthDate)
                 .IsRequired();
 
             builder.Property(a => a.FileSubmitted);

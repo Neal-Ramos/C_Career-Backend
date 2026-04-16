@@ -1,7 +1,6 @@
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using API.common.Responses;
-using Application.commons.Helpers;
+using Application.exeptions;
 using Application.features.Authentication.Commands.Login;
 using Application.features.Authentication.Commands.Logout;
 using Application.features.Authentication.Commands.RotateToken;
@@ -98,11 +97,15 @@ namespace API.controllers
         [HttpPost("logout")]
         [Authorize]
         public async Task<IActionResult> Logout(
-            LogoutCommand req,
             CancellationToken cancellationToken
         )
         {
-            var result = await _mediator.Send(req, cancellationToken);
+            var UsedRefreshToken = Request.Cookies["Refresh_Token"]?? throw new InvalidInputExeption("No Refresh Token was Found!");
+            var query = new LogoutCommand
+            {
+                UsedRefreshToken = UsedRefreshToken
+            };
+            var result = await _mediator.Send(query, cancellationToken);
 
             return Ok(new APIResponse<object>
             {

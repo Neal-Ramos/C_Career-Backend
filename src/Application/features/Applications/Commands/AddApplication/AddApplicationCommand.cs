@@ -13,8 +13,10 @@ namespace Application.features.Applications.Commands.AddApplication
         public string ContactNumber {get; set;} = null!;
         public string UniversityName {get; set;} = null!;
         public string Degree {get; set;} = null!;
+        public string Location {get; set;} = null!;
         public string CustomFields {get; set;} = null!;
         public int GraduationYear {get; set;}
+        public DateTime BirthDate {get; set;}
         public List<FileUploadDTO> SubmittedFile {get; set;} = [];
         public Guid JobId {get; set;}
     }
