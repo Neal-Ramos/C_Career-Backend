@@ -22,7 +22,8 @@ namespace API.middleware
 
             var (statusCode, errorCode, message) = exception switch
             {
-                InvalidInputExeption => (401, "INVALID_INPUTS", exception.Message),
+                InvalidInputExeption => (400, "INVALID_INPUTS", exception.Message),
+                UnauthorizeExeption => (401, "UNAUTHORIZED", exception.Message),
                 NotFoundExeption => (404, "DATA_NOT_FOUND", exception.Message),
                 ConflictExeption => (409, "DATABASE_CONFLICT", exception.Message),
                 _ => (500, "SERVER_ERROR", "An unexpected error occurred.")

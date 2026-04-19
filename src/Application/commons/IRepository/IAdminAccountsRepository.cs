@@ -7,5 +7,8 @@ namespace Application.commons.IRepository
         Task<AdminAccounts?> GetByUsername(
             string UserName
         );
+        Task<AdminAccounts?> GetByAdminId(
+            Guid AdminId
+        );
     }
 }

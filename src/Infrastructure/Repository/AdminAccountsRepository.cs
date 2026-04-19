@@ -18,5 +18,11 @@ namespace Infrastructure.Repository
             return await _context.AdminAccounts
                 .FirstOrDefaultAsync(a => a.UserName == UserName);
         }
+        public async Task<AdminAccounts?> GetByAdminId(
+            Guid AdminId
+        )
+        {
+            return await _context.AdminAccounts.FirstOrDefaultAsync(a => a.AdminId == AdminId);
+        }
     }
 }
