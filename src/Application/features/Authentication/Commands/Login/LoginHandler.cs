@@ -46,8 +46,8 @@ namespace Application.features.Authentication.Commands.Login
         )
         {
             var adminAccount = await _adminAccountsRepository.GetByUsername(req.Username) ?? throw new InvalidInputExeption();
-            // var isPasswordMatch = await _hashingService.VerifyString(req.Password, adminAccount.Password);
-            // if(!isPasswordMatch) throw new InvalidInputExeption();
+            var isPasswordMatch = await _hashingService.VerifyString(req.Password, adminAccount.Password);
+            if(!isPasswordMatch) throw new InvalidInputExeption();
 
             if(req.OtpCode == null)// Send Otp Code
             {

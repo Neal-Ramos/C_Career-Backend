@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using API.common.Responses;
 using API.contracts.AdminAccount;
+using Application.features.AdminAccounts.Commands.ChangePassword;
 using Application.features.AdminAccounts.Commands.UpdateAdminAccount;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -45,6 +46,29 @@ namespace API.controllers
             {
                 Message = "Account Updated!",
                 Data = result
+            });
+        }
+        [HttpPost("ChangePassword")]
+        [Authorize]
+        public async Task<IActionResult> ChangePassword(
+            [FromBody] ChangePasswordReq req,
+            CancellationToken cancellationToken
+        )
+        {
+            var adminId = User.FindFirstValue(ClaimTypes.NameIdentifier)?? throw new UnauthorizedAccessException();
+            var query = new ChangePasswordCommand
+            {
+                AdminId = Guid.Parse(adminId),
+                CurrentPassword = req.CurrentPassword,
+                NewPassword = req.NewPassword,
+                ConfirmNewPassword = req.ConfirmNewPassword
+            };
+
+            await _mediator.Send(query, cancellationToken);
+
+            return Ok(new APIResponse<object>
+            {
+                Message = "Password Updated!"
             });
         }
     }
