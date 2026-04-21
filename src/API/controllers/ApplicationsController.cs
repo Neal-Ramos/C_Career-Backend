@@ -5,6 +5,7 @@ using Application.features.Applications.Commands.AddApplication;
 using Application.features.Applications.Commands.PatchApplicationStatus;
 using Application.features.Applications.DTOs;
 using Application.features.Applications.Queries.GetApplicationByGuidWithRelation;
+using Application.features.Applications.Queries.GetApplicationFile;
 using Application.features.Applications.Queries.GetApplications;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -39,13 +40,20 @@ namespace API.controllers
             CancellationToken cancellationToken
         )
         {
-            var SubmittedFile = Request.Form.Files.Select(file => new FileUploadDTO
+            var SubmittedFile = (await Task.WhenAll(Request.Form.Files.Select(async file =>
             {
-                FileName = file.FileName,
-                ContentType = file.ContentType,
-                Content = file.OpenReadStream(),
-                Name = file.Name
-            }).ToList();
+                var memoryStream = new MemoryStream();
+                await file.CopyToAsync(memoryStream);
+                memoryStream.Position = 0;
+
+                return new FileUploadDTO
+                {
+                    FileName = file.FileName,
+                    ContentType = file.ContentType,
+                    Content = memoryStream,
+                    Name = file.Name
+                };
+            }))).ToList();
             var query = new AddApplicationCommand
             {
                 FirstName = firstName,
@@ -137,6 +145,21 @@ namespace API.controllers
                 Message = $"Application is Now {result.Status}",
                 Data = result
             });
+        }
+        [HttpGet("File")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetApplicationFile(
+            [FromQuery] string PublicId,
+            CancellationToken cancellationToken
+        )
+        {
+            var query = new GetApplicationFileQuery
+            {
+                PublicId = PublicId
+            };
+            var (Stream, ContentType) = await _mediator.Send(query, cancellationToken);
+
+            return File(Stream, ContentType);
         }
     }
 }

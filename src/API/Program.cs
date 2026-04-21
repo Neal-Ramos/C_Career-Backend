@@ -19,12 +19,16 @@ builder.Services.AddCors(options =>
         });
 });
 
-
 var isDevelopment = builder.Environment.IsDevelopment();
 
 builder.Services.AddJwtAuthentication(builder.Configuration);
 
+
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+builder.Services.AddControllers(options =>
+{
+    options.Filters.Add<NormalizeStringFilter>();
+});
 builder.Services.AddProblemDetails();
 
 builder.Services.AddControllers()

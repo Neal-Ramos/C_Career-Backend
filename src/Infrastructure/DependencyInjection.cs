@@ -2,15 +2,16 @@ using Application.commons.IRepository;
 using Application.commons.IServices;
 using Infrastructure.Persistence;
 using Infrastructure.Repository;
-using Infrastructure.Services;
-using Infrastructure.Services.CloudinaryServices;
 using Infrastructure.Services.HashingService;
 using Infrastructure.Services.ResendServices;
+using Infrastructure.Services.SupabaseService;
 using Infrastructure.Services.TokenServices;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Resend;
+using Supabase;
+using Supabase.Storage;
 
 namespace Infrastructure
 {
@@ -52,11 +53,21 @@ namespace Infrastructure
             services.AddScoped<IDbSeeder, DbSeeder>();
             
 
-            //Register Cloudinary
-            services.Configure<CloudinarySettings>(
-                configuration.GetSection("CloudinarySettings")
-            );
-            services.AddScoped<IStorageService, StorageRepository>();
+            //Register Supabase
+            services.AddScoped((provider) =>
+            {
+                var supabaseUrl = configuration["Supabase:Url"]!;
+                var supabaseKey = configuration["Supabase:ServiceKey"]!;
+                var options = new SupabaseOptions
+                {
+                    AutoRefreshToken = true,
+                    AutoConnectRealtime = true
+                };
+                var client = new Supabase.Client(supabaseUrl, supabaseKey, options);
+                client.InitializeAsync().GetAwaiter().GetResult();
+                return client;
+            });
+            services.AddScoped<IStorageService, SupabaseFileService>();
 
             //Register Resend
             services.AddOptions();

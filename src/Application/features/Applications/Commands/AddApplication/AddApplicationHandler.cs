@@ -36,6 +36,7 @@ namespace Application.features.Applications.Commands.AddApplication
             var SubmittedFile = await Task.WhenAll(
                 req.SubmittedFile.Select(file =>
                     _storageRepository.UploadAsync(
+                        FolderName: "Applications",
                         DocumentName: file.Name,
                         FileName: file.FileName,
                         ContentType: file.ContentType,

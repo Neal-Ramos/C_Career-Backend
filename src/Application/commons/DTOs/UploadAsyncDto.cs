@@ -7,6 +7,5 @@ namespace Application.commons.IServices
         public string ContentType {get; set;} = null!;
         public string Format {get; set;} = null!;
         public string PublicId {get; set;} = null!;
-        public string Path {get; set;} = null!; 
     }
 }
