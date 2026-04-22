@@ -80,6 +80,10 @@ namespace Infrastructure.Persistence.configurations
                 .WithMany(app => app.ProcessedApplications)
                 .HasForeignKey(app => app.AdminId)
                 .HasPrincipalKey(a => a.AdminId);
+            builder.HasMany(a => a.Interviews)
+                .WithOne(a => a.Application)
+                .HasForeignKey(a => a.ApplicationId)
+                .HasPrincipalKey(a => a.ApplicationId);
         }
     }
 }

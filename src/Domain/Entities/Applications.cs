@@ -27,6 +27,6 @@ namespace Domain.Entities
         public Jobs Job {get; set;} = null!;
         public Guid? AdminId {get; set;}
         public AdminAccounts? ProcessedBy{get; set;}
-        
+        public ICollection<ApplicantInterviews>? Interviews{get; set;}
     }
 }

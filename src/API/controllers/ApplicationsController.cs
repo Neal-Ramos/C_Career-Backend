@@ -135,6 +135,7 @@ namespace API.controllers
             {
                 ApplicationId = applicationId,
                 AdminId = Guid.Parse(adminId),
+                DateInterview = req.DateInterview,
                 Status = req.Status
             };
 
@@ -143,7 +144,7 @@ namespace API.controllers
             return Ok(new APIResponse<object>
             {
                 Message = $"Application is Now {result.Status}",
-                Data = result
+                Data = req
             });
         }
         [HttpGet("File")]

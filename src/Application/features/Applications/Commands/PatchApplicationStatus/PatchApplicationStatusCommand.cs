@@ -10,5 +10,6 @@ namespace Application.features.Applications.Commands.PatchApplicationStatus
         public Guid ApplicationId {get; set;}
         public Guid AdminId {get; set;}
         public ApplicationStatusEnum Status {get; set;}
+        public DateTime? DateInterview {get; set;}
     }
 }
