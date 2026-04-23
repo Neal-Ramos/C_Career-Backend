@@ -7,10 +7,12 @@ namespace Application.commons.IRepository
         Task<ICollection<Jobs>> GetAllJobs(
             int Page,
             int PageSize,
-            string? Search
+            string? Search,
+            bool IsDeleted = false
         );
         Task<int> GetJobsTotal(
-            string? Search
+            string? Search,
+            bool IsDeleted = false
         );
         Task<Jobs?> GetJobsById(
             Guid JobId

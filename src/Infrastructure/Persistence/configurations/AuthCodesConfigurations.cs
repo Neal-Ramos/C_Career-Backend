@@ -42,7 +42,8 @@ namespace Infrastructure.Persistence.configurations
             builder.HasOne(a => a.Owner)
                 .WithMany(o => o.AuthCodes)
                 .HasForeignKey(a => a.OwnerId)
-                .HasPrincipalKey(o => o.AdminId);
+                .HasPrincipalKey(o => o.AdminId)
+                .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }

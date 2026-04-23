@@ -3,6 +3,7 @@ using Application.commons.IRepository;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using Domain.Entities;
+using Domain.enums;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
@@ -61,18 +62,36 @@ namespace Infrastructure.Repository
         }
         public async Task<ICollection<Applications>> GetApplications(
             int Page,
-            int PageSize
+            int PageSize,
+            string? Search,
+            ApplicationStatusEnum? FilterStatus,
+            string? FilterJobTitle,
+            bool IncludeDeletedJob = false
         )
         {
-            return await _context.Applications.OrderBy(j => j.Id)
+            var query = _context.Applications.Where(a => a.Job.IsDeleted == IncludeDeletedJob).AsQueryable();
+            if(FilterStatus != null) query = query.Where(a => a.Status == FilterStatus);
+            if(!string.IsNullOrEmpty(Search)) query = query.Where(a => a.Email.Contains(Search));
+            if(!string.IsNullOrEmpty(FilterJobTitle))query = query.Where(a => a.Job.Title == FilterJobTitle);
+
+            return await query.OrderBy(j => j.Id)
                 .Skip((Page - 1) * PageSize)
                 .Take(PageSize)
                 .ToListAsync();
         }
         public async Task<int> GetApplicationsTotal(
+            string? Search,
+            ApplicationStatusEnum? FilterStatus,
+            string? FilterJobTitle,
+            bool IncludeDeletedJob = false
         )
         {
-            return _context.Applications.Count();
+            var query = _context.Applications.Where(a => a.Job.IsDeleted == IncludeDeletedJob).AsQueryable();
+            if(FilterStatus != null) query = query.Where(a => a.Status == FilterStatus);
+            if(!string.IsNullOrEmpty(Search)) query = query.Where(a => a.Email.Contains(Search));
+            if(!string.IsNullOrEmpty(FilterJobTitle))query = query.Where(a => a.Job.Title == FilterJobTitle);
+
+            return query.Count();
         }
         public async Task<Applications?> GetApplicationByGuid(
             Guid ApplicationId

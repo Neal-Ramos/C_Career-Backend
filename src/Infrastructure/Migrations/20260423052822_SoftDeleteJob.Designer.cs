@@ -4,6 +4,7 @@ using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260423052822_SoftDeleteJob")]
+    partial class SoftDeleteJob
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -165,7 +168,7 @@ namespace Infrastructure.Migrations
                     b.Property<int>("GraduationYear")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("JobId")
+                    b.Property<Guid?>("JobId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("LastName")
@@ -390,8 +393,7 @@ namespace Infrastructure.Migrations
                         .WithMany("JobApplications")
                         .HasForeignKey("JobId")
                         .HasPrincipalKey("JobId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Job");
 
@@ -413,8 +415,7 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Entities.AdminAccounts", "AdminAccounts")
                         .WithMany("CreatedJobs")
                         .HasForeignKey("AdminId")
-                        .HasPrincipalKey("AdminId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .HasPrincipalKey("AdminId");
 
                     b.Navigation("AdminAccounts");
                 });

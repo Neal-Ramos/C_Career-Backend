@@ -25,9 +25,16 @@ namespace Application.features.Applications.Queries.GetApplications
         {
             var applications = await _applications.GetApplications(
                 Page: req.Page,
-                PageSize: req.PageSize
+                PageSize: req.PageSize,
+                Search: req.Search,
+                FilterStatus: req.FilterStatus,
+                FilterJobTitle: req.FilterJobTitle
             );
-            var applicationsTotal = await _applications.GetApplicationsTotal();
+            var applicationsTotal = await _applications.GetApplicationsTotal(
+                Search: req.Search,
+                FilterStatus: req.FilterStatus,
+                FilterJobTitle: req.FilterJobTitle
+            );
 
             return new GetApplicationsDto
             {

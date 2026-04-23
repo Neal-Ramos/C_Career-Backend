@@ -42,7 +42,8 @@ namespace Infrastructure.Persistence.configurations
             builder.HasOne(j => j.AdminAccounts)
                 .WithMany(a => a.CreatedJobs)
                 .HasForeignKey(a => a.AdminId)
-                .HasPrincipalKey(j => j.AdminId);
+                .HasPrincipalKey(j => j.AdminId)
+                .OnDelete(DeleteBehavior.SetNull);
 
             builder.HasMany(j => j.JobApplications)
                 .WithOne(a => a.Job)

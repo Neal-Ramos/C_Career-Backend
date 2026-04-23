@@ -74,12 +74,14 @@ namespace Infrastructure.Persistence.configurations
             builder.HasOne(a => a.Job)
                 .WithMany(j => j.JobApplications)
                 .HasForeignKey(a => a.JobId)
-                .HasPrincipalKey(j => j.JobId);
+                .HasPrincipalKey(j => j.JobId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             builder.HasOne(a => a.ProcessedBy)
                 .WithMany(app => app.ProcessedApplications)
                 .HasForeignKey(app => app.AdminId)
-                .HasPrincipalKey(a => a.AdminId);
+                .HasPrincipalKey(a => a.AdminId)
+                .OnDelete(DeleteBehavior.SetNull);
             builder.HasMany(a => a.Interviews)
                 .WithOne(a => a.Application)
                 .HasForeignKey(a => a.ApplicationId)

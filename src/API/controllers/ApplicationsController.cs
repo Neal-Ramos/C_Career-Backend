@@ -83,16 +83,9 @@ namespace API.controllers
         [AllowAnonymous]
         public async Task<IActionResult> GetApplications(
             CancellationToken cancellationToken,
-            [FromQuery] int Page = 1,
-            [FromQuery] int PageSize = 5
+            [FromQuery] GetApplicationsQuery req
         ){
-            var query = new GetApplicationsQuery
-            {
-                Page = Page,
-                PageSize = PageSize
-            };
-
-            var result = await _mediator.Send(query, cancellationToken);
+            var result = await _mediator.Send(req, cancellationToken);
             
             return Ok(new APIResponse<object>
             {

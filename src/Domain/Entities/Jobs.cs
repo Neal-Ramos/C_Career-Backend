@@ -10,6 +10,7 @@ namespace Domain.Entities
         public string CustomFields {get; set;} = "[]";
         public string? FileRequirements {set; get;}
         public DateTime DateCreated {set; get;}
+        public bool IsDeleted {get; set;} = false;
 
         //
         public Guid? AdminId {get; set;}

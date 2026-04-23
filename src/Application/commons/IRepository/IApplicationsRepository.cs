@@ -1,5 +1,6 @@
 using Application.commons.DTOs;
 using Domain.Entities;
+using Domain.enums;
 
 namespace Application.commons.IRepository
 {
@@ -23,9 +24,17 @@ namespace Application.commons.IRepository
         );
         Task<ICollection<Applications>> GetApplications(
             int Page,
-            int PageSize
+            int PageSize,
+            string? Search,
+            ApplicationStatusEnum? FilterStatus,
+            string? FilterJobTitle,
+            bool IncludeDeletedJob = false
         );
         Task<int> GetApplicationsTotal(
+            string? Search,
+            ApplicationStatusEnum? FilterStatus,
+            string? FilterJobTitle,
+            bool IncludeDeletedJob = false
         );
         Task <Applications?> GetApplicationByGuid(
             Guid ApplicationId

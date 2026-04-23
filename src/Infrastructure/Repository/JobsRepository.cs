@@ -15,23 +15,26 @@ namespace Infrastructure.Repository
         public async Task<ICollection<Jobs>> GetAllJobs(
             int Page,
             int PageSize,
-            string? Search
+            string? Search,
+            bool IsDeleted = false
         )
         {
             var query = _context.Jobs.AsQueryable();
             if(Search != null) query = query.Where(a => a.Title.StartsWith(Search));
 
             return await query
+            .Where(j => j.IsDeleted == IsDeleted)
             .OrderBy(j => j.Id)
             .Skip((Page - 1) * PageSize)
             .Take(PageSize)
             .ToListAsync();
         }
         public async Task<int> GetJobsTotal(
-            string? Search
+            string? Search,
+            bool IsDeleted = false
         )
         {
-            var query = _context.Jobs.AsQueryable();
+            var query = _context.Jobs.Where(j => j.IsDeleted == IsDeleted).AsQueryable();
             if(Search != null) query = query.Where(a => a.Title.Contains(Search));
 
             return await _context.Jobs.CountAsync();

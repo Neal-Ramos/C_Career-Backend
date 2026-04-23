@@ -25,7 +25,9 @@ namespace Application.features.Jobs.Commands.DeleteJob
             CancellationToken cancellationToken
         )
         {
-            var deleteJob = await _jobsRepository.DeleteJobByGuid(JobId: req.JobId)?? throw new NotFoundExeption("Job Not Found");
+            var deleteJob = await _jobsRepository.GetJobsById(req.JobId)?? throw new NotFoundExeption("Job Is Not Existing");
+            deleteJob.IsDeleted = true;
+
             await _dbContext.SaveChangesAsync(cancellationToken);
 
             return deleteJob.JobId;
