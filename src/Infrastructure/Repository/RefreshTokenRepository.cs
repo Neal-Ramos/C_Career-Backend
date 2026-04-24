@@ -15,7 +15,7 @@ namespace Infrastructure.Repository
             _context = appDbContext;
         }
 
-        public async Task<RefreshTokens> AddRefreshToken(
+        public async Task<RefreshTokens> AddAsync(
             string Token,
             Guid OwnerId,
             DateTime ExpiryDate,

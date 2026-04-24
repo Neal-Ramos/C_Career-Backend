@@ -29,7 +29,7 @@ namespace Infrastructure.Repository
             .Take(PageSize)
             .ToListAsync();
         }
-        public async Task<int> GetJobsTotal(
+        public async Task<int> CountAsync(
             string? Search,
             bool IsDeleted = false
         )
@@ -37,7 +37,7 @@ namespace Infrastructure.Repository
             var query = _context.Jobs.Where(j => j.IsDeleted == IsDeleted).AsQueryable();
             if(Search != null) query = query.Where(a => a.Title.Contains(Search));
 
-            return await _context.Jobs.CountAsync();
+            return await query.CountAsync();
         }
         public async Task<Jobs?> GetJobsById(
             Guid JobId
@@ -45,7 +45,7 @@ namespace Infrastructure.Repository
         {
             return await _context.Jobs.FirstOrDefaultAsync(j => j.JobId == JobId);
         }
-        public async Task<Jobs> CreateJob(
+        public async Task<Jobs> AddAsync(
             string Title,
             string? Description,
             string Roles,

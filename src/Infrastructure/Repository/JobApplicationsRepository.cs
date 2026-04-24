@@ -22,7 +22,7 @@ namespace Infrastructure.Repository
             _mapper = mapper;
         }
         
-        public async Task<Applications> AddApplication(
+        public async Task<Applications> AddAsync(
             string FirstName,
             string? MiddleName,
             string LastName,
@@ -79,7 +79,7 @@ namespace Infrastructure.Repository
                 .Take(PageSize)
                 .ToListAsync();
         }
-        public async Task<int> GetApplicationsTotal(
+        public async Task<int> CountAsync(
             string? Search,
             ApplicationStatusEnum? FilterStatus,
             string? FilterJobTitle,
@@ -103,9 +103,16 @@ namespace Infrastructure.Repository
             Guid ApplicationId
         )
         {
-            return await _context.Applications
+            var result = await _context.Applications
                 .ProjectTo<ApplicationWithRelationsDto>(_mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync(a => a.ApplicationId == ApplicationId);
+
+            if(result?.Interviews != null)
+            {
+                result.Interviews = [.. result.Interviews.OrderByDescending(i => i.DateCreated)];
+            }
+
+            return result;
         }
     }
 }

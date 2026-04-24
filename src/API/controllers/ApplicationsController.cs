@@ -129,7 +129,8 @@ namespace API.controllers
                 ApplicationId = applicationId,
                 AdminId = Guid.Parse(adminId),
                 DateInterview = req.DateInterview,
-                Status = req.Status
+                Status = req.Status,
+                InterviewRemarks = req.InterviewRemarks
             };
 
             var result = await _mediator.Send(query, cancellationToken);
@@ -137,7 +138,7 @@ namespace API.controllers
             return Ok(new APIResponse<object>
             {
                 Message = $"Application is Now {result.Status}",
-                Data = req
+                Data = result
             });
         }
         [HttpGet("File")]

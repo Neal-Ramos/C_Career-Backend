@@ -27,7 +27,7 @@ namespace Application.features.Jobs.Commands.CreateJob
             CancellationToken cancellationToken
         )
         {
-            var newJob = await _jobsRepository.CreateJob(
+            var newJob = await _jobsRepository.AddAsync(
                 Title : req.Title,
                 Description : req.Description,
                 Roles : req.Roles,

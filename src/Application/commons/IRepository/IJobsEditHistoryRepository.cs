@@ -2,7 +2,7 @@ namespace Application.commons.IRepository
 {
     public interface IJobsEditHistoryRepository
     {
-        Task AddEditHistory(
+        Task AddAsync(
             Guid EditorId,
             Guid JobId,
             DateTime DateEdited,

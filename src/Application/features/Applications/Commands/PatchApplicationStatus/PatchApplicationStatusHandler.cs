@@ -36,7 +36,7 @@ namespace Application.features.Applications.Commands.PatchApplicationStatus
         )
         {
             var application = await _applicationsRepository.GetApplicationByGuid(req.ApplicationId)?? throw new NotFoundExeption();
-            var pendingInterview = await _applicantInterviewsRepository.GetByStatusAndOwnerId(
+            var pendingInterview = await _applicantInterviewsRepository.GetByStatusAndApplicationId(
                 application.ApplicationId,
                 ApplicantsInterviewStatus.Pending
             );
@@ -62,9 +62,11 @@ namespace Application.features.Applications.Commands.PatchApplicationStatus
             {
                 if(application.Status != ApplicationStatusEnum.Interview) throw new ConflictExeption("Only Interviewed Applicants Can be Approved or Declined");
                 if(application.AdminId != null) throw new ConflictExeption("This Application Is Processed");
+                if(pendingInterview.Status == ApplicantsInterviewStatus.Pending)pendingInterview.Status = ApplicantsInterviewStatus.Done;
                 application.DateReviewed = DateHelper.GetPHTime();
                 application.Status = req.Status;
                 application.AdminId = req.AdminId;
+                application.InterviewRemarks = req.InterviewRemarks;
 
                 pendingInterview.Status = ApplicantsInterviewStatus.Done;
                 await _dbContext.SaveChangesAsync(cancellationToken);

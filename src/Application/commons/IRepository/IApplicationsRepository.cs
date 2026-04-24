@@ -6,7 +6,7 @@ namespace Application.commons.IRepository
 {
     public interface IApplicationsRepository
     {
-        Task<Applications> AddApplication(
+        Task<Applications> AddAsync(
             string FirstName,
             string? MiddleName,
             string LastName,
@@ -25,15 +25,15 @@ namespace Application.commons.IRepository
         Task<ICollection<Applications>> GetApplications(
             int Page,
             int PageSize,
-            string? Search,
-            ApplicationStatusEnum? FilterStatus,
-            string? FilterJobTitle,
+            string? Search = null,
+            ApplicationStatusEnum? FilterStatus = null,
+            string? FilterJobTitle = null,
             bool IncludeDeletedJob = false
         );
-        Task<int> GetApplicationsTotal(
-            string? Search,
-            ApplicationStatusEnum? FilterStatus,
-            string? FilterJobTitle,
+        Task<int> CountAsync(
+            string? Search = null,
+            ApplicationStatusEnum? FilterStatus = null,
+            string? FilterJobTitle = null,
             bool IncludeDeletedJob = false
         );
         Task <Applications?> GetApplicationByGuid(

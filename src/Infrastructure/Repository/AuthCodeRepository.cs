@@ -13,7 +13,7 @@ namespace Infrastructure.Repository
             _context = appDbContext;
         }
 
-        public async Task<AuthCodes> CreateCodeFor(
+        public async Task<AuthCodes> AddAsync(
             string Code,
             DateTime DateCreated,
             DateTime DateExpiry,

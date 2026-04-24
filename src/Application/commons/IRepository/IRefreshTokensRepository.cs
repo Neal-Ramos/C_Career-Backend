@@ -4,7 +4,7 @@ namespace Application.commons.IRepository
 {
     public interface IRefreshTokensRepository
     {
-        Task<RefreshTokens> AddRefreshToken(
+        Task<RefreshTokens> AddAsync(
             string Token,
             Guid OwnerId,
             DateTime ExpiryDate,

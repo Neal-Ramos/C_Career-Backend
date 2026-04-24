@@ -36,12 +36,18 @@ namespace Infrastructure.Repository
 
             return applicantInterviews;
         }
-        public async Task<ApplicantInterviews?> GetByStatusAndOwnerId(
+        public async Task<ApplicantInterviews?> GetByStatusAndApplicationId(
             Guid ApplicationId,
             ApplicantsInterviewStatus Status
         )
         {
             return await _context.ApplicantInterviews.FirstOrDefaultAsync(a => a.Status == Status && a.ApplicationId == ApplicationId);
+        }
+        public async Task<ApplicantInterviews?> GetById(
+            Guid InterviewId
+        )
+        {
+            return await _context.ApplicantInterviews.FirstOrDefaultAsync(a => a.InterviewId == InterviewId);
         }
     }
 }

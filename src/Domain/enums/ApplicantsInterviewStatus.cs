@@ -5,7 +5,7 @@ namespace Domain.enums
     {
         Pending,
         Done,
-        Canceled,
-        Moved
+        Rescheduled,
+        NoShow
     }
 }

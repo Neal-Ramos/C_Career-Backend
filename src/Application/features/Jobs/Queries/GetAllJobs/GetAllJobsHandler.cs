@@ -26,7 +26,7 @@ namespace Application.features.Jobs.Queries.GetAllJobs
                 PageSize: req.PageSize,
                 Search: req.Search
             );
-            var jobsTotal = await _jobsRepository.GetJobsTotal(
+            var jobsTotal = await _jobsRepository.CountAsync(
                 Search: req.Search
             );
 

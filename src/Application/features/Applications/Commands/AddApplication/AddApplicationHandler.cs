@@ -46,7 +46,7 @@ namespace Application.features.Applications.Commands.AddApplication
                 )
             );
 
-            var newApplication = await _applicationsRepository.AddApplication(
+            var newApplication = await _applicationsRepository.AddAsync(
                 FirstName: req.FirstName,
                 MiddleName: req.MiddleName,
                 LastName: req.LastName,

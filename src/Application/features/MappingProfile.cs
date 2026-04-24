@@ -12,6 +12,7 @@ namespace Application
             CreateMap<Applications, ApplicationDto>();
             CreateMap<Applications, ApplicationWithRelationsDto>();
             CreateMap<AdminAccounts, AdminAccountDto>();
+            CreateMap<ApplicantInterviews, ApplicantInterviewsDto>();
         }
     }
 }

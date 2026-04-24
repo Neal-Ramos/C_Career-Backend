@@ -14,7 +14,7 @@ namespace Infrastructure.Repository
         {
             _context = appDbContext;
         }
-        public async Task AddEditHistory(
+        public async Task AddAsync(
             Guid EditorId,
             Guid JobId,
             DateTime DateEdited,

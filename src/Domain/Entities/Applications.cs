@@ -21,6 +21,7 @@ namespace Domain.Entities
         public ApplicationStatusEnum Status {get; set;} = ApplicationStatusEnum.Pending;
         public DateTime DateSubmitted {get; set;}
         public DateTime? DateReviewed {get; set;}
+        public string? InterviewRemarks {get; set;}
 
         //relation
         public Guid JobId {get; set;}

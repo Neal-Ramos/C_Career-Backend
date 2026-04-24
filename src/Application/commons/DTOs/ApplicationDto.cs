@@ -18,6 +18,7 @@ namespace Application.commons.DTOs
         public string Status {get; set;} = null!;
         public DateTime DateSubmitted {get; set;}
         public DateTime? DateReviewed {get; set;}
+        public string? InterviewRemarks {get; set;}
         public Guid JobId {get; set;}
         public Guid? AdminId {get; set;}
 

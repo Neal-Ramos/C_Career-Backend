@@ -30,7 +30,7 @@ namespace Application.features.Applications.Queries.GetApplications
                 FilterStatus: req.FilterStatus,
                 FilterJobTitle: req.FilterJobTitle
             );
-            var applicationsTotal = await _applications.GetApplicationsTotal(
+            var applicationsTotal = await _applications.CountAsync(
                 Search: req.Search,
                 FilterStatus: req.FilterStatus,
                 FilterJobTitle: req.FilterJobTitle

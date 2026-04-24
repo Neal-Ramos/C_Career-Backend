@@ -9,5 +9,6 @@ namespace API.contracts.Application
         [Required]
         public ApplicationStatusEnum Status {get; set;}
         public DateTime? DateInterview {get; set;}
+        public string? InterviewRemarks {get; set;}
     }
 }

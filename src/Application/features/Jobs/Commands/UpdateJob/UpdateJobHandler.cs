@@ -37,7 +37,7 @@ namespace Application.features.Jobs.Commands.UpdateJob
             job.Roles = req.Roles;
             job.CustomFields = req.CustomFields;
             job.FileRequirements = req.FileRequirements;
-            await _jobsEditHistoryRepository.AddEditHistory(
+            await _jobsEditHistoryRepository.AddAsync(
                 EditorId: req.EditorId,
                 JobId: req.JobId,
                 DateEdited: DateHelper.GetPHTime(),

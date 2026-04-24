@@ -11,9 +11,12 @@ namespace Application.commons.IRepository
             DateTime DateCreated,
             Guid ApplicationId
         );
-        Task<ApplicantInterviews?> GetByStatusAndOwnerId(
+        Task<ApplicantInterviews?> GetByStatusAndApplicationId(
             Guid ApplicationId,
             ApplicantsInterviewStatus Status
+        );
+        Task<ApplicantInterviews?> GetById(
+            Guid InterviewId
         );
     }
 }

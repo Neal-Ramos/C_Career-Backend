@@ -10,14 +10,14 @@ namespace Application.commons.IRepository
             string? Search,
             bool IsDeleted = false
         );
-        Task<int> GetJobsTotal(
+        Task<int> CountAsync(
             string? Search,
             bool IsDeleted = false
         );
         Task<Jobs?> GetJobsById(
             Guid JobId
         );
-        Task<Jobs> CreateJob(
+        Task<Jobs> AddAsync(
             string Title,
             string? Description,
             string Roles,
