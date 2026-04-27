@@ -34,7 +34,11 @@ namespace Application.features.Jobs.Commands.CreateJob
                 FileRequirements : req.FileRequirements,
                 CreatorId : req.CreatorId,
                 DateCreated : DateHelper.GetPHTime(),
-                CustomFields: req.CustomFields
+                CustomFields: req.CustomFields,
+                Salary : req.Salary,
+                EmploymentType : req.EmploymentType,
+                WorkArrangement : req.WorkArrangement
+
             );
             await _dbContext.SaveChangesAsync(cancellationToken);
 

@@ -115,7 +115,7 @@ namespace API.controllers
                 Data = result
             });
         }
-        [HttpPatch("{applicationId}")]
+        [HttpPatch("{applicationId}/Status")]
         [Authorize]
         public async Task<IActionResult> PatchApplicationStatus(
             [FromRoute] Guid applicationId,
@@ -130,7 +130,7 @@ namespace API.controllers
                 AdminId = Guid.Parse(adminId),
                 DateInterview = req.DateInterview,
                 Status = req.Status,
-                InterviewRemarks = req.InterviewRemarks
+                InterviewRemarks = req.InterviewRemarks,
             };
 
             var result = await _mediator.Send(query, cancellationToken);

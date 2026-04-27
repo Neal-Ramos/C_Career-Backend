@@ -1,4 +1,5 @@
 using Domain.Entities;
+using Domain.enums;
 
 namespace Application.commons.IRepository
 {
@@ -24,7 +25,10 @@ namespace Application.commons.IRepository
             string? FileRequirements,
             Guid CreatorId,
             DateTime DateCreated,
-            string CustomFields
+            string CustomFields,
+            string? Salary,
+            EmploymentTypeEnum EmploymentType,
+            WorkArrangementEnum WorkArrangement
         );
         Task<Jobs?> DeleteJobByGuid(
             Guid JobId

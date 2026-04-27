@@ -79,7 +79,10 @@ namespace API.controllers
                 Roles = req.Roles,
                 CustomFields = req.CustomFields,
                 FileRequirements = req.FileRequirements,
-                CreatorId = Guid.Parse(adminId)
+                CreatorId = Guid.Parse(adminId),
+                Salary = req.Salary,
+                EmploymentType = req.EmploymentType,
+                WorkArrangement = req.WorkArrangement
             };
 
             var result = await _mediatR.Send(query, cancellationToken);
@@ -106,7 +109,10 @@ namespace API.controllers
                 Roles= req.Roles,
                 CustomFields= req.CustomFields,
                 FileRequirements= req.FileRequirements,
-                EditSummary= req.EditSummary
+                EditSummary= req.EditSummary,
+                Salary = req.Salary,
+                EmploymentType = req.EmploymentType,
+                WorkArrangement = req.WorkArrangement
             };
             var result = await _mediatR.Send(query, cancellationToken);
 

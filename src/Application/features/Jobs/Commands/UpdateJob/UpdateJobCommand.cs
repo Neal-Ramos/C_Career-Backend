@@ -1,5 +1,6 @@
 
 using Application.commons.DTOs;
+using Domain.enums;
 using MediatR;
 
 namespace Application.features.Jobs.Commands.UpdateJob
@@ -14,5 +15,8 @@ namespace Application.features.Jobs.Commands.UpdateJob
         public string CustomFields {get; set;} = null!;
         public string FileRequirements {get; set;} = null!;
         public string? EditSummary {get; set;}
+        public string? Salary {get; set;}
+        public EmploymentTypeEnum EmploymentType {get; set;}
+        public WorkArrangementEnum WorkArrangement {get; set;}
     }
 }

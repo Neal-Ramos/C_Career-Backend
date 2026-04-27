@@ -1,3 +1,5 @@
+using Domain.enums;
+
 namespace Application.commons.DTOs
 {
     public class JobDto
@@ -9,6 +11,8 @@ namespace Application.commons.DTOs
         public string CustomFields {get; set;} = null!;
         public string? FileRequirements {set; get;}
         public DateTime DateCreated {set; get;}
-        public string? EditedBy {get; set;}
+        public string? Salary {get; set;}
+        public EmploymentTypeEnum EmploymentType {get; set;}
+        public WorkArrangementEnum WorkArrangement {get; set;}
     }
 }

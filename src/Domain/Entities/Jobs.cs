@@ -1,3 +1,5 @@
+using Domain.enums;
+
 namespace Domain.Entities
 {
     public class Jobs
@@ -10,6 +12,9 @@ namespace Domain.Entities
         public string CustomFields {get; set;} = "[]";
         public string? FileRequirements {set; get;}
         public DateTime DateCreated {set; get;}
+        public string? Salary {get; set;}
+        public EmploymentTypeEnum EmploymentType {get; set;}
+        public WorkArrangementEnum WorkArrangement {get; set;}
         public bool IsDeleted {get; set;} = false;
 
         //

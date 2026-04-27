@@ -41,10 +41,14 @@ namespace Application.features.Applications.Commands.PatchApplicationStatus
                 ApplicantsInterviewStatus.Pending
             );
 
-            if(req.Status == ApplicationStatusEnum.Interview && pendingInterview == null)// For Setting Interview
+            if(req.Status == ApplicationStatusEnum.Interview)// For Setting Interview
             {
+                if(
+                    pendingInterview == null || 
+                    application.Status != ApplicationStatusEnum.Pending
+                ) throw new InvalidInputExeption("Only Pending Application is Allowed For Interview");
                 if(!req.DateInterview.HasValue)throw new InvalidInputExeption("Interview Date Is Required");
-                if(application.Status != ApplicationStatusEnum.Pending)throw new ConflictExeption("Only Pending Application is Allowed For Interview");
+                
                 application.Status = req.Status;
                 await _applicantInterviewsRepository.AddAsync(
                     DateInterview : req.DateInterview.Value,
@@ -58,11 +62,14 @@ namespace Application.features.Applications.Commands.PatchApplicationStatus
                     HtmlContent: $"<div><strong>You got an interview on date {req.DateInterview}</div>"
                 );
             }
-            if(pendingInterview != null && (req.Status == ApplicationStatusEnum.Approved || req.Status == ApplicationStatusEnum.Declined))// For Approving or Declining Application
+            if(req.Status == ApplicationStatusEnum.Approved || req.Status == ApplicationStatusEnum.Declined)// For Approving or Declining Application
             {
-                if(application.Status != ApplicationStatusEnum.Interview) throw new ConflictExeption("Only Interviewed Applicants Can be Approved or Declined");
-                if(application.AdminId != null) throw new ConflictExeption("This Application Is Processed");
-                if(pendingInterview.Status == ApplicantsInterviewStatus.Pending)pendingInterview.Status = ApplicantsInterviewStatus.Done;
+                if(
+                    application.Status != ApplicationStatusEnum.Interview || 
+                    pendingInterview == null
+                ) throw new ConflictExeption("Only Interviewed Applicants Can be Approved or Declined");
+
+                pendingInterview.Status = ApplicantsInterviewStatus.Done;
                 application.DateReviewed = DateHelper.GetPHTime();
                 application.Status = req.Status;
                 application.AdminId = req.AdminId;

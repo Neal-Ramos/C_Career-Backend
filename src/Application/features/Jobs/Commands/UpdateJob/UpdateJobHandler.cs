@@ -37,6 +37,10 @@ namespace Application.features.Jobs.Commands.UpdateJob
             job.Roles = req.Roles;
             job.CustomFields = req.CustomFields;
             job.FileRequirements = req.FileRequirements;
+            job.Salary = req.Salary;
+            job.EmploymentType = req.EmploymentType;
+            job.WorkArrangement = req.WorkArrangement;
+
             await _jobsEditHistoryRepository.AddAsync(
                 EditorId: req.EditorId,
                 JobId: req.JobId,

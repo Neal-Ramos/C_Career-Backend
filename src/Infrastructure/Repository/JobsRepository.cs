@@ -1,5 +1,6 @@
 using Application.commons.IRepository;
 using Domain.Entities;
+using Domain.enums;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
@@ -52,7 +53,10 @@ namespace Infrastructure.Repository
             string? FileRequirements,
             Guid CreatorId,
             DateTime DateCreated,
-            string CustomFields
+            string CustomFields,
+            string? Salary,
+            EmploymentTypeEnum EmploymentType,
+            WorkArrangementEnum WorkArrangement
         )
         {
             var newJob = new Jobs
@@ -63,7 +67,10 @@ namespace Infrastructure.Repository
                 FileRequirements = FileRequirements,
                 DateCreated = DateCreated,
                 AdminId = CreatorId,
-                CustomFields = CustomFields
+                CustomFields = CustomFields,
+                Salary = Salary,
+                EmploymentType = EmploymentType,
+                WorkArrangement = WorkArrangement
             };
             await _context.Jobs.AddAsync(newJob);
 
