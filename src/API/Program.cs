@@ -29,13 +29,12 @@ builder.Services.AddJwtAuthentication(builder.Configuration);
 
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
-builder.Services.AddControllers(options =>
-{
-    options.Filters.Add<NormalizeStringFilter>();
-});
 builder.Services.AddProblemDetails();
 
-builder.Services.AddControllers()
+builder.Services.AddControllers(options =>
+    {
+        options.Filters.Add<NormalizeStringFilter>();
+    })
     .AddJsonOptions(options =>
     {
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(allowIntegerValues: false));
