@@ -26,7 +26,7 @@ namespace API.middleware
                 UnauthorizeExeption => (401, "UNAUTHORIZED", exception.Message),
                 NotFoundExeption => (404, "DATA_NOT_FOUND", exception.Message),
                 ConflictExeption => (409, "DATABASE_CONFLICT", exception.Message),
-                _ => (500, "SERVER_ERROR", exception.Message)
+                _ => (500, "SERVER_ERROR", exception.InnerException?.Message ?? exception.Message)
             };
 
             context.Response.StatusCode = statusCode;
