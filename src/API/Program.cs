@@ -7,7 +7,7 @@ using Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddCors(options =>
+builder.Services.AddCors((options) =>
 {
     options.AddPolicy("AllowReactApp",
         policy =>
@@ -16,7 +16,7 @@ builder.Services.AddCors(options =>
             //       .AllowAnyHeader()
             //       .AllowAnyMethod()
             //       .AllowCredentials();
-            policy.WithOrigins("https://calm-bush-0be990100.7.azurestaticapps.net")
+            policy.WithOrigins("https://red-island-001f6e500.7.azurestaticapps.net")
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials();
@@ -51,11 +51,11 @@ builder.Services.AddSwaggerGen(options =>
 
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
-{
-    var seeder = scope.ServiceProvider.GetRequiredService<IDbSeeder>();
-    await seeder.SeedAsync();
-}
+// using (var scope = app.Services.CreateScope())
+// {
+//     var seeder = scope.ServiceProvider.GetRequiredService<IDbSeeder>();
+//     await seeder.SeedAsync();
+// }
 
 app.UseExceptionHandler();
 
