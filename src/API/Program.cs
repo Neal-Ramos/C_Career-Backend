@@ -12,10 +12,14 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowReactApp",
         policy =>
         {
-            policy.WithOrigins("http://localhost:5173")
-                  .AllowAnyHeader()
-                  .AllowAnyMethod()
-                  .AllowCredentials();
+            // policy.WithOrigins("http://localhost:5173")
+            //       .AllowAnyHeader()
+            //       .AllowAnyMethod()
+            //       .AllowCredentials();
+            policy.WithOrigins("https://calm-bush-0be990100.7.azurestaticapps.net")
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials();
         });
 });
 
