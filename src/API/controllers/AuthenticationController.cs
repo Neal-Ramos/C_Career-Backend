@@ -3,10 +3,12 @@ using API.common.Responses;
 using Application.exeptions;
 using Application.features.Authentication.Commands.Login;
 using Application.features.Authentication.Commands.Logout;
+using Application.features.Authentication.Commands.OAuthLogin;
 using Application.features.Authentication.Commands.RotateToken;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace API.controllers
 {
@@ -15,11 +17,14 @@ namespace API.controllers
     public class AuthenticationController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly CookieOptions _cookieOptions;
         public AuthenticationController(
-            IMediator mediator
+            IMediator mediator,
+            IOptions<CookieOptions> cookieOptions
         )
         {
             _mediator = mediator;
+            _cookieOptions = cookieOptions.Value;
         }
         [HttpPost("login")]
         [AllowAnonymous]
@@ -28,24 +33,11 @@ namespace API.controllers
             CancellationToken cancellationToken
         )
         {
-            var query = new LoginCommand{
-                Username = req.Username,
-                Password = req.Password,
-                OtpCode = req.OtpCode
-            };
-
-            var result = await _mediator.Send(query, cancellationToken);
+            var result = await _mediator.Send(req, cancellationToken);
 
             if(result.RefreshToken != null)
             {
-                Response.Cookies.Append("Refresh_Token", result.RefreshToken, new CookieOptions
-                {
-                    HttpOnly = true,
-                    Secure   = true,
-                    SameSite = SameSiteMode.None,
-                    Expires  = DateTime.UtcNow.AddDays(1),
-                    Domain = ".c-career-backend-grcmgpgsege3crg8.southeastasia-01.azurewebsites.net"
-                });
+                Response.Cookies.Append("Refresh_Token", result.RefreshToken, _cookieOptions);
             }
             var response = new APIResponse<object>
             {
@@ -58,6 +50,26 @@ namespace API.controllers
             };
 
             return Ok(response);
+        }
+        [HttpPost("OAuthLogin")]
+        public async Task<IActionResult> OAuthLogin(
+            OAuthLoginCommand req,
+            CancellationToken cancellationToken
+        )
+        {
+            var result = await _mediator.Send(req, cancellationToken);
+
+            Response.Cookies.Append("Refresh_Token", result.RefreshToken, _cookieOptions);
+
+            return Ok(new APIResponse<object>
+            {
+                Message = result.Message,
+                Data = result.AdminAccount,
+                Meta = new Dictionary<string, object>
+                {
+                    ["AccessToken"] = result.AccessToken
+                }
+            });
         }
         [HttpPost("rotateToken")]
         [Authorize]
@@ -80,13 +92,7 @@ namespace API.controllers
 
             var result = await _mediator.Send(query, cancellationToken);
 
-            Response.Cookies.Append("Refresh_Token", result.NewRefreshToken, new CookieOptions
-            {
-                HttpOnly = true,
-                Secure   = Request.IsHttps,
-                SameSite = SameSiteMode.None,
-                Expires  = DateTime.UtcNow.AddDays(1)
-            });
+            Response.Cookies.Append("Refresh_Token", result.NewRefreshToken, _cookieOptions);
             return Ok(new APIResponse<object>
             {
                 Data = new

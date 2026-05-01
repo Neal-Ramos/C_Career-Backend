@@ -15,14 +15,19 @@ namespace Infrastructure.Repository
 
         public async Task<AdminAccounts?> GetByUsername(string UserName)
         {
-            return await _context.AdminAccounts
-                .FirstOrDefaultAsync(a => a.UserName == UserName);
+            return await _context.AdminAccounts.FirstOrDefaultAsync(a => a.UserName == UserName);
         }
         public async Task<AdminAccounts?> GetByAdminId(
             Guid AdminId
         )
         {
             return await _context.AdminAccounts.FirstOrDefaultAsync(a => a.AdminId == AdminId);
+        }
+        public async Task<AdminAccounts?> GetByEmail(
+            string Email
+        )
+        {
+            return await _context.AdminAccounts.FirstOrDefaultAsync(a => a.Email == Email);
         }
     }
 }

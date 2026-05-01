@@ -10,5 +10,8 @@ namespace Application.commons.IRepository
         Task<AdminAccounts?> GetByAdminId(
             Guid AdminId
         );
+        Task<AdminAccounts?> GetByEmail(
+            string Email
+        );
     }
 }

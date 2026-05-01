@@ -3,6 +3,7 @@ using Application.commons.IServices;
 using Infrastructure.Persistence;
 using Infrastructure.Repository;
 using Infrastructure.Services.HashingService;
+using Infrastructure.Services.OAuthService;
 using Infrastructure.Services.ResendServices;
 using Infrastructure.Services.SupabaseService;
 using Infrastructure.Services.TokenServices;
@@ -11,7 +12,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Resend;
 using Supabase;
-using Supabase.Storage;
 
 namespace Infrastructure
 {
@@ -47,6 +47,7 @@ namespace Infrastructure
             services.AddScoped<IRefreshTokensRepository, RefreshTokenRepository>();
             services.AddScoped<IJobsEditHistoryRepository, JobsEditHistoryRepository>();
             services.AddScoped<IApplicantInterviewsRepository, ApplicantInterviewsRepository>();
+            services.AddScoped<IOAuthService, GoogleOAuthService>();
 
             services.AddScoped<IHashingService, BcryptRepository>();
 

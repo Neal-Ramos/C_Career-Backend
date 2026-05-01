@@ -12,11 +12,7 @@ builder.Services.AddCors((options) =>
     options.AddPolicy("AllowReactApp",
         policy =>
         {
-            // policy.WithOrigins("http://localhost:5173")
-            //       .AllowAnyHeader()
-            //       .AllowAnyMethod()
-            //       .AllowCredentials();
-            policy.WithOrigins("https://red-island-001f6e500.7.azurestaticapps.net")
+            policy.WithOrigins("http://localhost:5173")
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials();
@@ -27,18 +23,23 @@ var isDevelopment = builder.Environment.IsDevelopment();
 
 builder.Services.AddJwtAuthentication(builder.Configuration);
 
-
+builder.Services.Configure<CookieOptions>(options =>
+{
+    options.HttpOnly = true;
+    options.Secure = !isDevelopment;
+    options.SameSite = isDevelopment? SameSiteMode.Lax : SameSiteMode.None;
+    options.Expires  = DateTime.UtcNow.AddDays(1);
+});
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 
 builder.Services.AddControllers(options =>
-    {
-        options.Filters.Add<NormalizeStringFilter>();
-    })
-    .AddJsonOptions(options =>
-    {
-        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(allowIntegerValues: false));
-    });
+{
+    options.Filters.Add<NormalizeStringFilter>();
+}).AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(allowIntegerValues: false));
+});
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration, isDevelopment);
 
@@ -50,11 +51,11 @@ builder.Services.AddSwaggerGen(options =>
 
 var app = builder.Build();
 
-// using (var scope = app.Services.CreateScope())
-// {
-//     var seeder = scope.ServiceProvider.GetRequiredService<IDbSeeder>();
-//     await seeder.SeedAsync();
-// }
+using (var scope = app.Services.CreateScope())
+{
+    var seeder = scope.ServiceProvider.GetRequiredService<IDbSeeder>();
+    await seeder.SeedAsync();
+}
 
 app.UseExceptionHandler();
 

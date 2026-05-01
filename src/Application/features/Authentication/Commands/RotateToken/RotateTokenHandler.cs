@@ -26,7 +26,7 @@ namespace Application.features.Authentication.Commands.RotateToken
             CancellationToken cancellationToken
         )
         {
-            var token = await _refreshTokensRepository.GetByToken(req.UsedRefreshToken)?? throw new InvalidInputExeption("Unauthorized");
+            var token = await _refreshTokensRepository.GetByToken(req.UsedRefreshToken)?? throw new UnauthorizeExeption("No Token Found");
             if(token.ExpiryDate < DateTime.UtcNow)
             {
                 token.IsRevoked = true;
@@ -42,7 +42,7 @@ namespace Application.features.Authentication.Commands.RotateToken
             token.Token = newRefreshToken;
             token.ExpiryDate = DateTime.UtcNow.AddDays(1);
 
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync(cancellationToken);
             return new RotateTokenDto
             {
                 NewAccessToken = newAccessToken,
