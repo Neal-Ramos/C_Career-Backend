@@ -41,9 +41,10 @@ namespace API.controllers
                 Response.Cookies.Append("Refresh_Token", result.RefreshToken, new CookieOptions
                 {
                     HttpOnly = true,
-                    Secure   = Request.IsHttps,
-                    SameSite = SameSiteMode.Lax,
-                    Expires  = DateTime.UtcNow.AddDays(1)
+                    Secure   = true,
+                    SameSite = SameSiteMode.None,
+                    Expires  = DateTime.UtcNow.AddDays(1),
+                    Domain = ".c-career-backend-grcmgpgsege3crg8.southeastasia-01.azurewebsites.net"
                 });
             }
             var response = new APIResponse<object>
@@ -83,7 +84,7 @@ namespace API.controllers
             {
                 HttpOnly = true,
                 Secure   = Request.IsHttps,
-                SameSite = SameSiteMode.Lax,
+                SameSite = SameSiteMode.None,
                 Expires  = DateTime.UtcNow.AddDays(1)
             });
             return Ok(new APIResponse<object>
