@@ -21,6 +21,5 @@ namespace Application.commons.DTOs
         public string? InterviewRemarks {get; set;}
         public Guid JobId {get; set;}
         public Guid? AdminId {get; set;}
-
     }
 }

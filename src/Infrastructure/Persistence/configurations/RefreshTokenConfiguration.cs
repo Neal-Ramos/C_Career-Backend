@@ -11,23 +11,20 @@ namespace Infrastructure.Persistence.configurations
             builder.ToTable("RefreshTokens");
 
             builder.HasKey(a => a.Id);
-            builder.HasIndex(a => a.Token);
+            builder.HasIndex(a => a.Token)
+                .IsUnique();
+            builder.HasIndex(a => a.OwnerId);
 
             builder.Property(a => a.Id)
                 .ValueGeneratedOnAdd();
-
             builder.Property(a => a.Token)
                 .IsRequired();
-
             builder.Property(a => a.OwnerId)
                 .IsRequired();
-
             builder.Property(a => a.IsRevoked)
                 .HasDefaultValue(false);
-
             builder.Property(a => a.ExpiryDate)
                 .IsRequired();
-
             builder.Property(a => a.DateCreated)
                 .IsRequired();
         }

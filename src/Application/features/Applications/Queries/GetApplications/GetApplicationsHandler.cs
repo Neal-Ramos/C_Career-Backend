@@ -38,7 +38,7 @@ namespace Application.features.Applications.Queries.GetApplications
 
             return new GetApplicationsDto
             {
-                Applications = _mapper.Map<ICollection<ApplicationDto>>(applications),
+                Applications = _mapper.Map<ICollection<ApplicationWithRelationsDto>>(applications),
                 TotalRecord = applicationsTotal,
                 TotalPages = (int)Math.Ceiling((double)applicationsTotal / req.PageSize)
             };

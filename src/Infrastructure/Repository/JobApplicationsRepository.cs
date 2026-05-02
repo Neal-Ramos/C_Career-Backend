@@ -75,6 +75,7 @@ namespace Infrastructure.Repository
             if(!string.IsNullOrEmpty(FilterJobTitle))query = query.Where(a => a.Job.Title == FilterJobTitle);
 
             return await query.OrderBy(j => j.Id)
+                .Include(a => a.Job)
                 .Skip((Page - 1) * PageSize)
                 .Take(PageSize)
                 .ToListAsync();

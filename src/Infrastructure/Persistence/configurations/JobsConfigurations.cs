@@ -13,28 +13,24 @@ namespace Infrastructure.Persistence.configurations
             builder.HasKey(j => j.Id);
             builder.HasIndex(j => j.JobId)
                 .IsUnique();
+            builder.HasIndex(j => j.Title);
+            builder.HasIndex(j => j.AdminId);
 
             builder.Property(j => j.Id)
                 .ValueGeneratedOnAdd();
-                
             builder.Property(j => j.JobId)
                 .HasDefaultValueSql("NEWID()")
                 .IsRequired();
-
             builder.Property(j => j.Title)
                 .HasMaxLength(200)
                 .IsRequired();
-            
             builder.Property(j => j.Description)
                 .IsRequired();
-
             builder.Property(j => j.Roles)
                 .HasMaxLength(1000)
                 .IsRequired();
-
             builder.Property(j => j.FileRequirements)
                 .IsRequired();
-
             builder.Property(j => j.DateCreated)
                 .IsRequired();
             
@@ -44,12 +40,10 @@ namespace Infrastructure.Persistence.configurations
                 .HasForeignKey(a => a.AdminId)
                 .HasPrincipalKey(j => j.AdminId)
                 .OnDelete(DeleteBehavior.SetNull);
-
             builder.HasMany(j => j.JobApplications)
                 .WithOne(a => a.Job)
                 .HasForeignKey(a => a.JobId)
                 .HasPrincipalKey(j => j.JobId);
-                
             builder.HasMany(j => j.EditHistory)
                 .WithOne(e => e.Job)
                 .HasForeignKey(e => e.JobId)

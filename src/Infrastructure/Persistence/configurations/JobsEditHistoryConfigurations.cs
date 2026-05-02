@@ -12,7 +12,10 @@ namespace Infrastructure.Persistence.configurations
             builder.ToTable("JobsEditHistory");
 
             builder.HasKey(e => e.Id);
-            builder.HasIndex(e => e.EditId);
+            builder.HasIndex(e => e.EditId)
+                .IsUnique();
+            builder.HasIndex(e => e.EditorId);
+            builder.HasIndex(e => e.JobId);
 
             builder.Property(a => a.Id)
                 .ValueGeneratedOnAdd();

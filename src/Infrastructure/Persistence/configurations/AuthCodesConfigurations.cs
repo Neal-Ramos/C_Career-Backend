@@ -13,27 +13,23 @@ namespace Infrastructure.Persistence.configurations
             builder.HasKey(a => a.Id);
             builder.HasIndex(a => a.AuthCodeId)
                 .IsUnique();
+            builder.HasIndex(a => a.Code);
+            builder.HasIndex(a => a.OwnerId);
 
             builder.Property(a => a.Id)
                 .ValueGeneratedOnAdd();
-
             builder.Property(a => a.AuthCodeId)
                 .HasDefaultValueSql("NEWID()")
                 .IsRequired();
-
             builder.Property(a => a.Code)
                 .HasMaxLength(6)
                 .IsRequired();
-
             builder.Property(a => a.DateCreated)
                 .IsRequired();
-
             builder.Property(a => a.DateExpiry)
                 .IsRequired();
-
             builder.Property(a => a.DateUsed)
                 .HasDefaultValue(false);
-
             builder.Property(a => a.IsUsed)
                 .IsRequired();
 

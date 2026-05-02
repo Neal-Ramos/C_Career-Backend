@@ -6,20 +6,19 @@ using Infrastructure;
 using Infrastructure.Persistence;
 
 var builder = WebApplication.CreateBuilder(args);
+var isDevelopment = builder.Environment.IsDevelopment();
 
 builder.Services.AddCors((options) =>
 {
     options.AddPolicy("AllowReactApp",
         policy =>
         {
-            policy.WithOrigins("http://localhost:5173")
+            policy.WithOrigins(isDevelopment? "http://localhost:5173":"https://gentle-mushroom-0a6104400.7.azurestaticapps.net")
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials();
         });
 });
-
-var isDevelopment = builder.Environment.IsDevelopment();
 
 builder.Services.AddJwtAuthentication(builder.Configuration);
 
@@ -51,11 +50,11 @@ builder.Services.AddSwaggerGen(options =>
 
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
-{
-    var seeder = scope.ServiceProvider.GetRequiredService<IDbSeeder>();
-    await seeder.SeedAsync();
-}
+// using (var scope = app.Services.CreateScope())
+// {
+//     var seeder = scope.ServiceProvider.GetRequiredService<IDbSeeder>();
+//     await seeder.SeedAsync();
+// }
 
 app.UseExceptionHandler();
 

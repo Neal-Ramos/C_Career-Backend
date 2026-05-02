@@ -14,6 +14,7 @@ namespace Infrastructure.Persistence.configurations
             builder.HasKey(a => a.Id);
             builder.HasIndex(a => a.InterviewId)
                 .IsUnique();
+            builder.HasIndex(a => a.ApplicationId);
 
             builder.Property(a => a.Id)
                 .ValueGeneratedOnAdd();
