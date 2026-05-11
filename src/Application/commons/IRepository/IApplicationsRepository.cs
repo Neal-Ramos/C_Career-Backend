@@ -42,5 +42,9 @@ namespace Application.commons.IRepository
         Task <ApplicationWithRelationsDto?> GetApplicationByGuidWithRelation(
             Guid ApplicationId
         );
+        Task <Applications?> CheckIfExistingAsync(
+            string Email,
+            Guid JobId
+        );
     }
 }

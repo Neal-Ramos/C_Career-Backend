@@ -2,6 +2,7 @@ using Application.commons.IRepository;
 using Application.commons.IServices;
 using Infrastructure.Persistence;
 using Infrastructure.Repository;
+using Infrastructure.Services.AIService;
 using Infrastructure.Services.HashingService;
 using Infrastructure.Services.OAuthService;
 using Infrastructure.Services.ResendServices;
@@ -48,7 +49,7 @@ namespace Infrastructure
             services.AddScoped<IJobsEditHistoryRepository, JobsEditHistoryRepository>();
             services.AddScoped<IApplicantInterviewsRepository, ApplicantInterviewsRepository>();
             services.AddScoped<IOAuthService, GoogleOAuthService>();
-
+            services.AddScoped<IAIService, GroqService>();
             services.AddScoped<IHashingService, BcryptRepository>();
 
             //Register Seeder

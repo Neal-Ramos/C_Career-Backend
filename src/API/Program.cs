@@ -50,11 +50,11 @@ builder.Services.AddSwaggerGen(options =>
 
 var app = builder.Build();
 
-// using (var scope = app.Services.CreateScope())
-// {
-//     var seeder = scope.ServiceProvider.GetRequiredService<IDbSeeder>();
-//     await seeder.SeedAsync();
-// }
+using (var scope = app.Services.CreateScope())
+{
+    var seeder = scope.ServiceProvider.GetRequiredService<IDbSeeder>();
+    await seeder.SeedAsync();
+}
 
 app.UseExceptionHandler();
 

@@ -3,6 +3,7 @@ using Application.commons.DTOs;
 using Application.commons.Helpers;
 using Application.commons.IRepository;
 using Application.commons.IServices;
+using Application.exeptions;
 using AutoMapper;
 using MediatR;
 
@@ -33,6 +34,9 @@ namespace Application.features.Applications.Commands.AddApplication
 
         public async Task<ApplicationDto> Handle(AddApplicationCommand req, CancellationToken cancellationToken)
         {
+            var checkExistingApplication = await _applicationsRepository.CheckIfExistingAsync(req.Email, req.JobId);
+            if(checkExistingApplication != null) throw new InvalidInputExeption("You Already Applied to this Job");
+
             var SubmittedFile = await Task.WhenAll(
                 req.SubmittedFile.Select(file =>
                     _storageRepository.UploadAsync(
@@ -45,7 +49,6 @@ namespace Application.features.Applications.Commands.AddApplication
                     )
                 )
             );
-
             var newApplication = await _applicationsRepository.AddAsync(
                 FirstName: req.FirstName,
                 MiddleName: req.MiddleName,

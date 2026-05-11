@@ -33,6 +33,7 @@
     <PackageReference Include="Supabase" Version="1.1.1" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.*" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.2" />
+    <PackageReference Include="Google.GenAI" Version="1.6.1" />
   </ItemGroup>
 
 </Project>

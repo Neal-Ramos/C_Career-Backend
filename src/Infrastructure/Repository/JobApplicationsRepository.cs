@@ -115,5 +115,12 @@ namespace Infrastructure.Repository
 
             return result;
         }
+        public async Task <Applications?> CheckIfExistingAsync(
+            string Email,
+            Guid JobId
+        )
+        {
+            return await _context.Applications.FirstOrDefaultAsync(a => a.Email == Email && a.JobId == JobId);
+        }
     }
 }

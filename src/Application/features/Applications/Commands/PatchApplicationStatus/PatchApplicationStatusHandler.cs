@@ -64,23 +64,23 @@ namespace Application.features.Applications.Commands.PatchApplicationStatus
             }
             if(req.Status == ApplicationStatusEnum.Approved || req.Status == ApplicationStatusEnum.Declined)// For Approving or Declining Application
             {
-                if(
-                    application.Status != ApplicationStatusEnum.Interview || 
-                    pendingInterview == null
-                ) throw new ConflictExeption("Only Interviewed Applicants Can be Approved or Declined");
+                if (req.Status == ApplicationStatusEnum.Approved &&
+                    (application.Status != ApplicationStatusEnum.Interview || pendingInterview == null))
+                    throw new InvalidInputExeption("Only Interviewed Applicants Can be Approved");
 
-                pendingInterview.Status = ApplicantsInterviewStatus.Done;
+                if (pendingInterview != null)
+                    pendingInterview.Status = ApplicantsInterviewStatus.Done;
+
                 application.DateReviewed = DateHelper.GetPHTime();
                 application.Status = req.Status;
                 application.AdminId = req.AdminId;
                 application.InterviewRemarks = req.InterviewRemarks;
 
-                pendingInterview.Status = ApplicantsInterviewStatus.Done;
                 await _dbContext.SaveChangesAsync(cancellationToken);
                 await _sendEmailService.SendEmailAsync(
                     To: application.Email,
                     Subject: $"Your Application is {req.Status}",
-                    HtmlContent: $"<div><strong>Your Application Got {req.Status}</div>"
+                    HtmlContent: $"<div><strong>Your Application Got {req.Status}</strong></div>"
                 );
             }
 

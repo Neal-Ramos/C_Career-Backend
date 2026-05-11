@@ -1,6 +1,6 @@
-using System.Text.Json;
-using Application.commons.Helpers;
 using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace Infrastructure.Persistence
 {
@@ -11,56 +11,37 @@ namespace Infrastructure.Persistence
 
     public class DbSeeder : IDbSeeder
     {
-        private readonly AppDbContext context;
+        private readonly AppDbContext _context;
+        private readonly IConfiguration _configuration;
 
-        public DbSeeder(AppDbContext appDbContext)
+        public DbSeeder(
+            AppDbContext appDbContext,
+            IConfiguration configuration
+        )
         {
-            context = appDbContext;
+            _context = appDbContext;
+            _configuration = configuration;
         }
 
         public async Task SeedAsync()
         {
-            
-            if (!context.AdminAccounts.Any())
+            var admin = await _context.AdminAccounts.FirstOrDefaultAsync(a => a.Email == _configuration["AdminAccount:Email"]!);
+            if (admin == null)
             {
-                context.AdminAccounts.AddRange(
+                _context.AdminAccounts.AddRange(
                     new AdminAccounts
                     {
-                        Email = "nealramos72@gmail.com",
-                        UserName = "Neal",
-                        Password = BCrypt.Net.BCrypt.HashPassword("admin"),
-                        FirstName = "Neal",
-                        LastName = "Ramos",
-                        BirthDate = new DateTime(2004, 9, 18)
+                        Email = _configuration["AdminAccount:Email"]!,
+                        UserName = "Admin",
+                        Password = BCrypt.Net.BCrypt.HashPassword(_configuration["AdminAccount:Password"]!),
+                        FirstName = "Admin",
+                        LastName = "Admin",
+                        BirthDate = new DateTime(2000, 1, 1)
                     }
                 );
-                await context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
             }
-            // var admin = context.AdminAccounts.First();
-            // if (!context.Jobs.Any() && admin != null)
-            // {
-            //     context.Jobs.AddRange(
-            //         new Jobs
-            //         {
-            //             Title = "Frontend Developer",
-            //             Description = "Build responsive interfaces using React and TailwindCSS.",
-            //             Roles = JsonSerializer.Serialize(new[]
-            //             {
-            //                 new { Name = "React", Level = "Intermediate" },
-            //                 new { Name = "Tailwind", Level = "Intermediate" },
-            //                 new { Name = "TypeScript", Level = "Advanced" }
-            //             }),
-            //             FileRequirements = JsonSerializer.Serialize(new[]
-            //             {
-            //                 new { label = "Resume", Required = true },
-            //                 new { label = "Portfolio", Required = false }
-            //             }),
-            //             AdminAccounts = admin,
-            //             DateCreated = DateHelper.GetPHTime()
-            //         }
-            //     );
-            // }
-            await context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
     }
 }
